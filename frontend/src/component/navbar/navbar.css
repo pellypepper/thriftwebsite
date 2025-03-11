@@ -1,0 +1,181 @@
+header{
+box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    height: 100px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(38, 38, 38);
+    color: white;
+}
+
+li{
+    text-decoration: none;
+    list-style: none;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+  
+    align-items: center;
+}
+nav ul li{
+    display: inline-block;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+.signin-btn .btn{
+    background-color: white;
+    color: black;
+}
+
+
+nav div p{
+    margin-right: 1rem;
+
+}
+
+
+.right-menu p{
+    cursor: pointer;
+}
+
+.search-wrapper{
+    overflow: hidden;
+    border: 2px solid white;
+    width: 250px;
+    height: 50px;
+}
+
+.search-wrapper input{
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 80%;
+    padding: 10px;
+ 
+    color: black;
+}
+.search-wrapper button{
+    border: none;
+    height: 100%;
+    width: 20%;
+    cursor: pointer;
+    background-color: red;
+}
+.search-results {
+    display: block ;
+    line-height: 1.8rem;
+    padding: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    height: auto;
+    width: 200px;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 999;
+  margin-top: .3rem;
+    color: black;
+}
+.search-results li:hover{
+    background-color: black;
+    color: white;
+}
+
+aside .right-menu{
+ display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+aside .screen-lg{
+    display: none;
+}
+
+ul li a{
+    color: white;
+    text-decoration: none;
+}
+.signin-btn .btn{
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+.open{
+    display: flex;
+    transition: all 0.5s;
+}
+
+@media screen and (max-width: 768px) {
+    header{
+        position: relative;
+    }
+      nav {
+        background-color: white;
+        color: black;
+z-index: 999;
+          position: absolute;
+          width: 100%;
+    
+          height: 100vh;
+          left: 0;
+          right: 0;
+          top: 100px;
+          bottom: 0;
+          flex-direction: column;
+          justify-content: start;
+          align-items: flex-start;
+          padding: 20px;
+          display: none;
+      }
+      nav ul{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      nav ul li a{
+        color:  black;
+      }
+      nav ul li{
+       padding: 10px;
+        margin-top: 1rem;
+        border-top:  2px solid rgba(0, 0, 0, 0.219);
+
+      }
+      .signin-btn .btn{
+        background-color: black;
+        color: white;
+    }
+      .open{
+        display: flex;
+        transition: all 0.5s;
+      }
+      nav div{
+       
+        flex-direction: column;
+        margin-left: 0;
+        width: 100%;
+      }
+      .acct-wrapper button{
+ width: 100%;
+    
+      }
+ nav div p{
+    padding: 10px;
+    margin-top: 1rem;
+    border-top:  2px solid rgba(0, 0, 0, 0.219);
+ }
+.search-wrapper{
+    display: none;
+}
+aside .screen-sm{
+    display: none;
+}
+aside .screen-lg{
+    display: flex;
+}
+
+}

@@ -1,0 +1,31 @@
+#conditon-select, #category-select {
+    border: none;
+    outline: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-self: space-around;
+    height: 100%;
+    color: white;
+    background-color: inherit;
+}
+ #location-select{
+    background-color: inherit;
+    outline: none;
+}
+
+.location-container  {
+    background-color: black;
+    margin: 20px 0;
+  
+  }
+  
+
+ .condition #condition-select{
+    border: none;
+    outline: none;
+    width: 100%;
+    background-color: inherit;
+    color: white;
+ }
+  
