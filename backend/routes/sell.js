@@ -57,11 +57,11 @@ router.post('/form', async (req, res) => {
     // Handle the file upload first
     await handleUpload(req, res);
 console.log(req.body);
-    const { title, price, description, condition, location, category, clerk_id } = req.body;
+    const { title, price, description, condition, location, category, main_category, clerk_id } = req.body;
     if(!clerk_id) {
       return res.status(400).json({ error: 'You need to Sign In to post a product' });
     }
-    if (!title || !price || !description || !condition || !location || !category ){
+    if (!title || !price || !description || !condition || !location || !category || !main_category) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
@@ -90,11 +90,12 @@ console.log(req.body);
       condition,
       location,
       category,
+      main_category,
       image_url,
       clerk_id,
       created_at
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW()) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()) 
     RETURNING *
   `;
   
@@ -105,6 +106,7 @@ console.log(req.body);
     condition,
     location,
     category,
+    main_category,
     cloudinaryResponse.secure_url,
     clerk_id
   ];

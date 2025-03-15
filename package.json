@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^5.1.6",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.5.1",
     "@testing-library/jest-dom": "^6.6.3",
     "axios": "^1.7.9",
@@ -19,7 +21,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.8",

@@ -13,11 +13,14 @@ router.get('/items', async (req, res) => {
     try {
         let response;
 
-        if (['Garden', 'Games', 'Bags'].includes(category)) {
-          response = await pool.query('SELECT * FROM items WHERE category = $1 LIMIT $2 OFFSET $3', [category, limit, offset]);
-        } else {
-            return res.status(400).json({ message: 'Invalid category' }); 
-        }
+        if (['HomeGarden', 'Entertainment', 'ClothingAccessories'].includes(category)) {
+          response = await pool.query('SELECT * FROM items WHERE main_category = $1 LIMIT $2 OFFSET $3', [category, limit, offset]);
+        } 
+        else  {
+           const result = await pool.query('SELECT * FROM items WHERE category = $1 LIMIT $2 OFFSET $3', [category, limit, offset]);
+           response = result.rows.filter(item => item.main_category !== category); 
+        } 
+        
 
         if (response.rows.length > 0) {
             console.log(response.rows);  

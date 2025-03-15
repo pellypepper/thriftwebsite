@@ -41,6 +41,7 @@ router.post('/auth', verifyToken, async (req, res) => {
     );
     
     res.json(updatedUser.rows[0]);
+    console.log(updatedUser.rows[0]);
   } catch (error) {
     console.error('Auth error:', error);
     res.status(500).json({ error: error.message });
