@@ -9,7 +9,7 @@ const HomeGarden = () => {
   return (
     <div className='product-container'>
     
-         <ProductList category="Garden" title="Home & Garden" />
+         <ProductList category="HomeGarden" title="Home & Garden" />
     </div>
   )
 }
@@ -21,7 +21,7 @@ const Entertainment = () => {
   return (
     <div className='product-container'>
  
-         <ProductList category="Games" title="Entertainment" />
+         <ProductList category="Entertainment" title="Entertainment" />
     </div>
   )
 }
@@ -32,13 +32,24 @@ const Clothing = () => {
   return (
     <div className='product-container'>
      
-         <ProductList category="Bags" title="Clothing & Accessories" />
+         <ProductList category="ClothingAccessories" title="Clothing & Accessories" />
+    </div>
+  )
+}
+
+const Random = ({random}) => {
+
+   
+  return (
+    <div className='product-container'>
+     
+         <ProductList category={random} title="Similar items" />
     </div>
   )
 }
 
 
-export {HomeGarden, Entertainment, Clothing}
+export {HomeGarden, Entertainment, Clothing, Random}
 
 
 

@@ -1,12 +1,16 @@
 // ProductCard.js
 import React from 'react';
 import './product.css';
-
+import { useNavigate } from 'react-router-dom';
 const ProductCard = ({ products }) => {
+     const Navigate = useNavigate();
+  const handleClick = (product) => {
+      Navigate('/details', {state: {product}})
+  }
   return (
     <div className="product-grid">
       {products.map((product, index) => (
-        <div key={index} className="product-card">
+        <div key={index} className="product-card"  onClick={()=>handleClick(product)}>
           <div className="product-image-container">
             <img src={product.image_url} alt={product.title} className="product-image" />
             <div className="product-overlay">

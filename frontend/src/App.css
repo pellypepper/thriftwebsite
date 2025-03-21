@@ -9,3 +9,10 @@ body{
   background-color: #f9f9f9;
   width: 100%;
 }
+
+
+:root{
+  --primary-color: #e74c3c;
+  --btn-hover : #c0392b;
+  
+}

@@ -33,6 +33,22 @@ const Sell = ({ sellRef }) => {
       alert('You need to Sign In to post a product');
       return;
     }
+    const categoryToMainCategory = {
+      'Tools': 'HomeGarden',
+      'Furniture': 'HomeGarden',
+      'Garden': 'HomeGarden',
+      'Appliances': 'HomeGarden',
+      'Household': 'HomeGarden',
+      'Books, Movies & Music': 'Entertainment',
+      'Video Games': 'Entertainment',
+      'Jewelry & Accessories': 'ClothingAccessories',
+      'Bags & Luggage': 'ClothingAccessories',
+      'Men\'s Clothing & Shoes': 'ClothingAccessories',
+      'Women\'s Clothing & Shoes': 'ClothingAccessories'
+    };
+
+    let mainCategory = categoryToMainCategory[category] || 'Other';
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('price', price);
@@ -41,8 +57,11 @@ const Sell = ({ sellRef }) => {
     formData.append('location', location);
     formData.append('category', category);
     formData.append('image_url', file);
+    formData.append('main_category', mainCategory);
     formData.append('clerk_id', clerkUser.id);
+
 console.log(formData);
+
     dispatch(postListing(formData));
   };
 

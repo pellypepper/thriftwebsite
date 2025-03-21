@@ -5,7 +5,7 @@ const Category = ({selectedCategory, setSelectedCategory}) => {
   return (
     <div>
       <select
-        id="category-select"
+        id="select"
         value={selectedCategory || ""}
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
@@ -23,7 +23,7 @@ const Category = ({selectedCategory, setSelectedCategory}) => {
 
         <optgroup label="Entertainment">
           <option value="Books, Movies & Music">Books, Movies & Music</option>
-          <option value="Games">Video Games</option>
+          <option value="Video Games">Video Games</option>
         </optgroup>
 
         <optgroup label="Clothing & Accessories">

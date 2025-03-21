@@ -31,7 +31,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
       },
       body: JSON.stringify(userData)
     });
-    
+      console.log(token)
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || 'Failed to sync Clerk data');

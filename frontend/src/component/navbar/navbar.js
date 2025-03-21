@@ -3,40 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser, useAuth } from "@clerk/clerk-react";
-import { setToken, fetchUserData, sendClerkDataToBackend, clearAuth } from "../../features/authSlice";
+import { useNavigate } from "react-router-dom";
+
+import { SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/clerk-react";
+
+
 import { setQuery, fetchSearchResults } from "../../features/searchSlice";
 import "./navbar.css";
 
-export default function Navbar({ sellRef }) {
+export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, handleSignOut }) {
     const menuRef = useRef(null);
     const searchRef = useRef(null); // 🔹 Ref for detecting outside clicks
-    const dispatch = useDispatch();
-    const { user: clerkUser, isSignedIn } = useUser();
-    const { getToken } = useAuth();
-    const { loading, clerkSyncStatus } = useSelector(state => state.auth);
+     const dispatch = useDispatch();
     const { query, results } = useSelector(state => state.search);
-
+    const navigate = useNavigate()
     const [showResults, setShowResults] = useState(false); // 🔹 State to control dropdown visibility
 
-    useEffect(() => {
-        const initializeAuth = async () => {
-            if (isSignedIn && clerkUser) {
-                try {
-                    const token = await getToken();
-                    dispatch(setToken(token));
-                    localStorage.setItem("clerk-token", token);
-                    
-                    await dispatch(sendClerkDataToBackend({ user: clerkUser, token })).unwrap();
-                    
-                    dispatch(fetchUserData(token));
-                } catch (error) {
-                    console.error("Auth error:", error);
-                }
-            }
-        };
-        initializeAuth();
-    }, [isSignedIn, clerkUser, dispatch, getToken]);
 
     const handleToggle = () => {
         if (menuRef.current) {
@@ -44,11 +26,7 @@ export default function Navbar({ sellRef }) {
         }
     };
 
-    const handleSignOut = () => {
-        localStorage.removeItem("clerk-token");
-        dispatch(clearAuth());
-    };
-
+   
     const handleSellClick = () => {
         if (sellRef.current) {
             sellRef.current.classList.toggle("open");
@@ -81,6 +59,15 @@ export default function Navbar({ sellRef }) {
         };
     }, []);
 
+    const handleSignIn = () => {
+        if(clerkUser){
+            navigate('/listing')
+        }
+        else {
+            return alert('you must sign in to view this page')
+        }
+    }
+
     return (
         <main>
             <header>
@@ -92,6 +79,7 @@ export default function Navbar({ sellRef }) {
                         <li>Categories</li>
                         <li>Deals</li>
                         <li onClick={handleSellClick}>Sell</li>
+                        <li onClick={handleSignIn}>My listings</li>
                         <li>Help</li>
                         <li className="userbutton">
                             <UserButton afterSignOutCallback={handleSignOut} />

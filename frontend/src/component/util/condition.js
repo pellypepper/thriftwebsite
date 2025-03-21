@@ -5,7 +5,7 @@ const Condition = ({setSelectedCondtion, selectedCondtion}) => {
   return (
     <div className='condition'>
       <select
-        id="condition-select"
+        id="select"
         value={selectedCondtion || ""}
         onChange={(e) => setSelectedCondtion(e.target.value)}
       >

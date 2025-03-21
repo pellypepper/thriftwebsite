@@ -10,6 +10,7 @@ const userRoutes = require('./backend/routes/user');
 const sellRouter = require('./backend/routes/sell'); 
 const productRouter = require('./backend/routes/product'); 
 const chatRouter = require('./backend/routes/chat');
+const listingRouter = require('./backend/routes/listing');
 const pool = require('./database/db');
 const bodyParser = require('body-parser');
 const app = express();
@@ -46,6 +47,7 @@ app.use('/user', userRoutes);
 app.use('/api/sell', sellRouter);
 app.use('/api/product', productRouter);
 app.use('/chat', chatRouter);
+app.use('/listing', listingRouter);
 
 
 

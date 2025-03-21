@@ -16,9 +16,9 @@ router.post('/create-chat', async (req, res) => {
         // First, check if a chat already exists between the buyer, seller, and product
       const checkChatQuery = `
         SELECT chat_id FROM chats 
-        WHERE buyer_id = $1 OR seller_id = $1 AND item_id = $2
+        WHERE buyer_id = $1 AND seller_id = $2 AND item_id = $3
       `;
-      const checkResult = await pool.query(checkChatQuery, [buyer_id,  product_id]);
+      const checkResult = await pool.query(checkChatQuery, [buyer_id, seller_id,  product_id]);
        
       if (checkResult.rows.length > 0) {
         // If a chat exists, return the existing chat_id
@@ -53,7 +53,7 @@ router.get('/getUser/:user', async (req, res) => {
         WHERE clerk_id = $1
         `;
         const result = await pool.query(chatQuery, [user]);
-        res.json(result.rows);
+      return  res.json(result.rows);
     } catch (error) {
         console.error('Error fetching user:', error);
         res.status(500).json({ message: 'Error fetching user' });
@@ -62,15 +62,15 @@ router.get('/getUser/:user', async (req, res) => {
   
 // Send a message in a chat
 router.post('/send-message', async (req, res) => {
-  const { chat_id, sender_id, message_text } = req.body;
+  const { chat_id, sender_id, message_text, message_sender } = req.body;
 
   try {
     const messageQuery = `
-      INSERT INTO messages (chat_id, sender_id, message_text) 
-      VALUES ($1, $2, $3) 
+      INSERT INTO messages (chat_id, sender_id, message_text, message_sender) 
+      VALUES ($1, $2, $3, $4) 
       RETURNING message_id
     `;
-    const result = await pool.query(messageQuery, [chat_id, sender_id, message_text]);
+    const result = await pool.query(messageQuery, [chat_id, sender_id, message_text, message_sender ]);
 
     const message_id = result.rows[0].message_id;
     res.json({ message_id });
