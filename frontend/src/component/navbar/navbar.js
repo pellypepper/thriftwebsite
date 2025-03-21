@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import { SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/clerk-react";
 
 
@@ -58,6 +57,11 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+
+      const handleNavigate = (product) => {
+          navigate('/details', {state: {product}})
+      }
 
    
     return (
@@ -113,7 +117,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                     {showResults && results.length > 0 && (
                         <ul className="search-results">
                             {results.map((product, index) => (
-                                <li key={index}>{product.title}</li>
+                                <li onClick={()=> handleNavigate(product)} key={index}>{product.title}</li>
                             ))}
                         </ul>
                     )}

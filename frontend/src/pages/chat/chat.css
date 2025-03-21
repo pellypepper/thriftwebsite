@@ -43,7 +43,7 @@
   font-weight: bold;
 }
 
-h2 {
+.chat-header h2 {
   margin-left: 20px;
   font-size: 22px;
   font-weight: 500;

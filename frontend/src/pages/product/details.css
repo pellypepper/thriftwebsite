@@ -75,7 +75,7 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-.details-product-info {
+.details-info-wrapper .details-product-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
