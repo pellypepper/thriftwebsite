@@ -31,7 +31,7 @@ const io = socketIo(server, {
 
 const corsOptions = {
   origin: 'http://localhost:3000', // Allow frontend to communicate with the backend
-  methods: ['GET', 'POST'], // Allow GET and POST methods
+  methods: ['GET', 'POST', 'DELETE', 'PUT'], // Allow GET and POST methods
   credentials: true, // Allow credentials (e.g., cookies) to be sent
 };
 

@@ -3,29 +3,41 @@ import Navbar from "../../component/navbar/navbar";
 import "./listing.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { getChatId, getCombineInfo } from '../../features/listSlice'; // Ensure correct path
-import { getUsers, getMessages } from '../../features/chatSlice'; // Ensure correct path
+import { getUsers, getMessages , sendMessage, deleteMessages} from '../../features/chatSlice'; // Ensure correct path
+import { io } from 'socket.io-client';
 
+
+const socket = io('http://localhost:5000');
 
 export default function Listing({ userId }) {
     const dispatch = useDispatch();
     const { chatId, combineInfo, loading, error } = useSelector((state) => state.list); // Access Redux state
     const [message, setMessage] = useState(null)
+    const [newMessage, setNewMessage] = useState('')
       const [isSending, setIsSending] = useState(false);
+      const [currentChatId , setCurrentChatId] = useState('')
+      const [sellerUserId, setSellerUserId] = useState('')
+      const [updatedCombine, setUpdatedCombine] = useState([])
+      const [user , setUser]= useState('')
 
     useEffect(() => {
         const fetchChatId = async () => {
-            // Check if the user is signed in
-         
+    
+        if(!userId) {
+            return 'signin to continue'
+        }
 
             try {
                 // Fetch user data (ensure correct response format)
                 const buyerData = await dispatch(getUsers(userId)).unwrap();
-        
+                setUser(buyerData[0].id)
                 if (buyerData[0]?.id) {
                     // Dispatch getChatId with the user ID
                    await dispatch(getChatId(buyerData[0].id));
                 
-              
+                  
+                } else {
+                    alert('you need to login')
                 }
             } catch (error) {
                 console.error("Error fetching chat ID or user data:", error);
@@ -37,30 +49,95 @@ export default function Listing({ userId }) {
 
     useEffect(() => {
         if (chatId.length > 0) {
-       
+           
           dispatch(getCombineInfo(chatId));
         }
       }, [chatId, dispatch]); 
+      useEffect(() => {
+        setUpdatedCombine(combineInfo, 'newcombine')
+    
+      }, [currentChatId, combineInfo]);
       
-      const handleViewChat = async(chatId) =>{
-        console.log(combineInfo, 'combine')
- 
-                if(chatId){
-                  const message =  await dispatch(getMessages(chatId)).unwrap()
-                  console.log(message, 'message')
+      const handleViewChat = async(chat_id, sellerId) =>{
+
+
+                if(chat_id){
+                  const message =  await dispatch(getMessages(chat_id)).unwrap()
+           
                   setMessage(message)
+                  setCurrentChatId(chat_id)
+                  setSellerUserId(sellerId)
+                  
+                  
                 } else{
                     setMessage(null);
                 }
       }
       
       const handleInputChange = (e) => {
-       
+        setNewMessage(e.target.value);
+     
+        if (currentChatId && user) {
+          socket.emit('typing', { chat_id: currentChatId, user_id: user });
+        }
       };
     
       const handleSendMessage = async () => {
+   
+            
+                 
+               
+          if (currentChatId && user && newMessage.trim()) {
+
+             try {
+               const senderType = user === sellerUserId ? "Seller" : "Buyer";
+        
+               
+               const messageData = {
+                 chat_id: currentChatId,
+                 sender_id: user,
+                 message_text: newMessage,
+                 message_sender: senderType
+               };
+               
        
+              
+               
+               
+                await dispatch(sendMessage(messageData)).unwrap();
+            
+               
+               // Emit via socket if needed
+               socket.emit('send-message', messageData);
+               
+       
+               setNewMessage('');
+       
+               const updatedMessages = await dispatch(getMessages(currentChatId)).unwrap();
+               setMessage(updatedMessages);
+             } catch (error) {
+               console.error('Error in handleSendMessage:', error);
+             
+             }
+           }
         }
+        const handleDelete = async (chat) => {
+           
+            if (!chat) {
+              return 'No chat ID found';
+            }
+
+          
+            // Dispatch the deleteMessages async action
+            await dispatch(deleteMessages(chat));
+            const filter = updatedCombine.filter( prev => prev.chat_id !== chat)
+            setUpdatedCombine(filter)
+
+            const updatedCombineInfo = chatId.filter(prev => prev !== chat);
+          
+            dispatch(getCombineInfo(updatedCombineInfo));
+          };
+          
 
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error: {error}</p>;
@@ -74,18 +151,26 @@ export default function Listing({ userId }) {
                 <div className="listing-grid">
                     <div className="message-container">
                         <h3>Messages</h3>
-                        {combineInfo.map((prod) => (
-                            <div  onClick={() => handleViewChat(prod.chat_id)}  className="message-listing" key={prod.chat_id}>
+                        {updatedCombine.length > 0 ?   (
+                            <div>
+                                {updatedCombine.map((prod) => (
+                            <div  onClick={() => handleViewChat(prod.chatId, prod.sellerId)}  className="message-listing" key={prod.chatId}>
                                 <div className="listing-icon">
-                                    <img src={`path_to_image/${prod.image_url}`} alt={prod.name} />
+                                    <img src={`${prod.image_url}`} alt={prod.name} />
                                 </div>
 
                                 <div className="listing-info">
                                     <h3>{prod.title}</h3>
                                     <p>{prod.message_text}</p>
                                 </div>
+                                <button onClick={()=> handleDelete(prod.chatId)}> {loading ? 'Deleting...' : 'Delete'}</button>
+                          
                             </div>
                         ))}
+                            </div>
+                        ) : (
+                            <p> No Active Message</p>
+                        )}
                     </div>
 
                     <div className="listing-chat">
@@ -98,7 +183,7 @@ export default function Listing({ userId }) {
                                        <div className="message-split">
                                            <div className="listing-div-2">
                                             {message.map((msg) => (
-                                                <div className="msg-list">
+                                                <div className="msg-list"  key={msg.message_id}>
                                                     <p key={msg.message_id}>{msg.message_sender}: {msg.message_text}</p>
                                                     <p >{msg.timestamp}</p>
                                                 </div>
@@ -110,7 +195,7 @@ export default function Listing({ userId }) {
                                                     <input
                                                       type="text"
                                                       placeholder="Type your message..."
-                                                      value={''}
+                                                      value={newMessage}
                                                       onChange={handleInputChange}
                                                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                                                       disabled={isSending}

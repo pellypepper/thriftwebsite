@@ -80,6 +80,33 @@ router.post('/send-message', async (req, res) => {
   }
 });
 
+router.delete('/delete-message/:chatId', async (req, res) => {
+  const { chatId } = req.params; // Extract chatId from URL parameters
+
+  
+  if (!chatId || isNaN(chatId)) {
+    return res.status(400).json({ message: 'Invalid chatId format' });
+  }
+
+  try {
+    // Check if the chat exists
+    const result = await pool.query('SELECT chat_id FROM chats WHERE chat_id = $1', [chatId]);
+
+    if (result.rows.length > 0) {
+      // Chat exists, delete it
+      await pool.query('DELETE FROM chats WHERE chat_id = $1', [chatId]);
+      res.status(200).json({ message: 'Chat deleted successfully' });
+    } else {
+      // Chat does not exist
+      res.status(404).json({ message: 'Chat not found' });
+    }
+  } catch (error) {
+    // Catch any unexpected errors
+    console.error(error);
+    res.status(500).json({ message: 'Server error, unable to delete chat' });
+  }
+});
+
 // Get all messages for a specific chat
 router.get('/get-messages/:chat_id', async (req, res) => {
   const { chat_id } = req.params;

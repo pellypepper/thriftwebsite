@@ -9,9 +9,9 @@ export const getChatId = createAsyncThunk('listing/getChatId', async (userId) =>
         'Content-Type': 'application/json',
       },
     });
-    console.log(userId, 'user')
+
     const data = await response.json();
-    console.log(data, '77');    
+
     return data;
   });
 
@@ -49,7 +49,12 @@ export const getChatId = createAsyncThunk('listing/getChatId', async (userId) =>
         })
         .addCase(getChatId.fulfilled, (state, action) => {
           state.loading = false;
-          state.chatId = action.payload.map(item => item.chat_id); 
+          if (Array.isArray(action.payload)) {
+            state.chatId = action.payload.map(item => item.chat_id);
+        } else {
+            
+            state.chatId = [];
+        }
         })
         .addCase(getChatId.rejected, (state, action) => {
           state.loading = false;

@@ -55,10 +55,10 @@ export default function ChatPage({ buyerId }) {
           setUserId(buyerData[0].id);
           setSellerUserId(sellerData[0].id);
           setChatDat(chatData.chat_id); // Set chat id to state
-          console.log('Chat created with chatId:', chatData.chat_id);
+      
   
           socket.emit('join-chat', chatData.chat_id);
-          console.log(sellerUserId, 'yes');
+         
         } catch (error) {
           console.error("Error fetching users or creating chat:", error);
         }
@@ -70,7 +70,7 @@ export default function ChatPage({ buyerId }) {
     return () => {
       if (chatDat) {
         socket.emit('leave-chat', chatDat);
-        console.log(chatDat, 'no');
+      
       }
     };
   }, [buyerId, sellerId, productId, product.image_url, product.price, product.title, dispatch, chatDat, sellerUserId]);
@@ -100,7 +100,7 @@ export default function ChatPage({ buyerId }) {
     useEffect(() => {
         if (chatDat) {
           const handleNewMessage = async (message) => {
-            console.log('New message received:', message);
+           
             if (message.chat_id === chatDat) {
               try {
                 const newChatMessages = await dispatch(getMessages(chatDat)).unwrap();
@@ -150,8 +150,7 @@ export default function ChatPage({ buyerId }) {
         
         
         const result = await dispatch(sendMessage(messageData)).unwrap();
-        console.log('Message sent successfully:', result);
-        
+      
         // Emit via socket if needed
         socket.emit('send-message', messageData);
         
@@ -166,12 +165,7 @@ export default function ChatPage({ buyerId }) {
       }
     }
   };
-  
-  const formatTime = (timestamp) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+
 
   return (
     <main>
@@ -211,12 +205,8 @@ export default function ChatPage({ buyerId }) {
                       key={index} 
                       className={`message-bubble ${msg.sender_id === userId ? 'sent' : 'received'}`}
                     >
-                      <div className="message-content">
-                        {msg.message_text}
-                      </div>
-                      <div className="message-time">
-                        {formatTime(msg.created_at)}
-                      </div>
+                          <p key={msg.message_id}>{msg.message_sender}: {msg.message_text}</p>
+                          <p >{msg.timestamp}</p>
                     </div>
                   ))}
                   <div ref={messagesEndRef} />

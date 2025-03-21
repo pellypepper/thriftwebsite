@@ -20,16 +20,16 @@ export default function Details({buyerId}) {
       navigate("/chat", { state: { product } });
     }
   }
-  // Redirect to home if product is not found
+  
   useEffect(() => {
     if (!product) {
-      console.log(product.id);
+
       navigate('/');
     }
   }, [product, navigate]);
 
   if (!product) {
-    return null; // Prevent rendering when product is not available
+    return null; 
   }
 
   return (

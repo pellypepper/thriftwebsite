@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Async actions using createAsyncThunk
 export const createChat = createAsyncThunk('chat/createChat', async (chatDetails) => {
   const response = await fetch('http://localhost:5000/chat/create-chat', {
     method: 'POST',
@@ -10,7 +9,7 @@ export const createChat = createAsyncThunk('chat/createChat', async (chatDetails
     body: JSON.stringify(chatDetails),
   });
   const data = await response.json();
-  console.log(data);
+
   return data;
 });
 
@@ -21,7 +20,7 @@ export const sendMessage = createAsyncThunk(
       const { chat_id, sender_id, message_text, message_sender } = messageData;
           
       if (!chat_id || !sender_id || !message_text || !message_sender) {
-        console.error('Missing required fields:', { chat_id, sender_id, message_text, message_sender });
+       
         return rejectWithValue('Missing required message fields');
       }
       
@@ -46,19 +45,32 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
-
 export const getMessages = createAsyncThunk('chat/getMessages', async (chat_id) => {
   const response = await fetch(`http://localhost:5000/chat/get-messages/${chat_id}`);
   const data = await response.json();
-  console.log(data);
+
   return data;
 });
 
+export const deleteMessages = createAsyncThunk(
+  'chat/deleteMessages', 
+  async (chat_id) => {   
+  
+    const response = await fetch(`http://localhost:5000/chat/delete-message/${chat_id}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+
+    return data;
+  }
+);
+
 export const getUsers = createAsyncThunk('chat/getUsers', async (userDetails) => {
-    const response = await fetch(`http://localhost:5000/chat/getUser/${userDetails}`);
-      console.log(response);
-      return response.json();
+  const response = await fetch(`http://localhost:5000/chat/getUser/${userDetails}`);
+
+  return response.json();
 });
+
 const chatSlice = createSlice({
   name: 'chat',
   initialState: {
@@ -69,28 +81,68 @@ const chatSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    // Handle createChat
-    builder.addCase(createChat.fulfilled, (state, action) => {
+ 
+    builder
+      .addCase(createChat.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createChat.fulfilled, (state, action) => {
+        state.loading = false;
         if (action.payload.chat_id) {
-            state.chatId = action.payload.chat_id;
-            console.log('Updated chatId in Redux state:', state.chatId); 
-          } else {
-            console.error('Error: chat_id not found in payload');
-          }
-    });
+          state.chatId = action.payload.chat_id;
+          console.log('Updated chatId in Redux state:', state.chatId); 
+        } else {
+          console.error('Error: chat_id not found in payload');
+        }
+      })
+      .addCase(createChat.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
     
-    // Handle sendMessage
-    builder.addCase(sendMessage.fulfilled, (state, action) => {
+ 
+    .addCase(sendMessage.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(sendMessage.fulfilled, (state, action) => {
+      state.loading = false;
       state.messages.push(action.payload);
-    });
+    })
+    .addCase(sendMessage.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    })
 
-    // Handle getMessages
-    builder.addCase(getMessages.fulfilled, (state, action) => {
+
+    .addCase(getMessages.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(getMessages.fulfilled, (state, action) => {
+      state.loading = false;
       state.messages = action.payload;
-    });
+    })
+    .addCase(getMessages.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    })
 
-    // Handle errors
-    builder.addMatcher(
+
+    .addCase(deleteMessages.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(deleteMessages.fulfilled, (state, action) => {
+      state.loading = false;
+ 
+      const deletedChatId = action.payload.chat_id;
+      state.messages = state.messages.filter(msg => msg.chat_id !== deletedChatId);
+    })
+    .addCase(deleteMessages.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    })
+
+    // Handle errors globally
+    .addMatcher(
       (action) => action.type.endsWith('/rejected'),
       (state, action) => {
         state.error = action.error.message;

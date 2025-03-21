@@ -28,7 +28,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
 
    
     const handleSellClick = () => {
-        if (sellRef.current) {
+        if (sellRef && sellRef.current) {
             sellRef.current.classList.toggle("open");
         } 
     };
@@ -59,15 +59,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
         };
     }, []);
 
-    const handleSignIn = () => {
-        if(clerkUser){
-            navigate('/listing')
-        }
-        else {
-            return alert('you must sign in to view this page')
-        }
-    }
-
+   
     return (
         <main>
             <header>
@@ -79,7 +71,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                         <li>Categories</li>
                         <li>Deals</li>
                         <li onClick={handleSellClick}>Sell</li>
-                        <li onClick={handleSignIn}>My listings</li>
+                        <li> <Link to='/listing'>My listings</Link></li>
                         <li>Help</li>
                         <li className="userbutton">
                             <UserButton afterSignOutCallback={handleSignOut} />

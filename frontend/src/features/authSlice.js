@@ -31,7 +31,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
       },
       body: JSON.stringify(userData)
     });
-      console.log(token)
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || 'Failed to sync Clerk data');
@@ -47,7 +47,7 @@ export const fetchUserData = createAsyncThunk(
     const response = await fetch('http://localhost:5000/user/acct', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    console.log(response);
+
     return response.json();
   }
 );

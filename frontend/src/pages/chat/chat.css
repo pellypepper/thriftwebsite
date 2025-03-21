@@ -1,60 +1,190 @@
-/* ChatPage.css */
+
+/* Chat Page Layout */
 .chat-page {
-    max-width: 600px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  overflow: hidden;
+}
 
-  }
-  .chat-header{
+.chat-header {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
 
+.chat-page  .product-info {
+  display: flex;
+  align-items: center;
+}
+
+.chat-page  .product-info img {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  border-radius: 8px;
+}
+
+.product-details h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.product-price {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+h2 {
+  margin-left: 20px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* Chat Messages Area */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  height: 100%;
+}
+
+.messages-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 10px;
+  background-color: #ecf0f1;
+  border-radius: 10px;
+  padding-left: 10px;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 70%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.sent {
+  align-self: flex-end;
+  background-color: #3498db;
+  color: white;
+}
+
+.received {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+  color: #2c3e50;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #7f8c8d;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.typing-indicator {
+  color: #7f8c8d;
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 10px;
+  animation: typing 1s infinite;
+}
+
+@keyframes typing {
+  0% {
+    content: "User is typing.";
   }
-  .product-images{
-     }
-  
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 400px;
-    border: 1px solid #ddd;
-    padding: 20px;
+  33% {
+    content: "User is typing..";
   }
-  
-  .messages {
-    flex-grow: 1;
-    overflow-y: auto;
+  66% {
+    content: "User is typing...";
   }
-  
-  .message {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  .message.buyer {
-    background-color: #f0f0f0;
-  }
-  
-  .message.seller {
-    background-color: #d0ffd0;
-  }
-  
-  .input-container {
-    display: flex;
-    margin-top: 10px;
-  }
-  
-  .input-container input {
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  .input-container  button {
-    padding: 10px;
-    margin-left: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
+}
+
+/* Input Area */
+.input-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.message-input {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+.message-input:focus {
+  border-color: #3498db;
+}
+
+.send-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.send-button:disabled {
+  background-color: #b0c4de;
+  cursor: not-allowed;
+}
+
+.send-button:hover {
+  background-color: #2980b9;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #3498db;
+}
+
+.no-messages {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #95a5a6;
+}
+
+/* Error Message */
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  text-align: center;
+}
