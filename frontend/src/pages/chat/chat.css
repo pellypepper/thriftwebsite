@@ -3,6 +3,7 @@
 .chat-page {
   display: flex;
   flex-direction: column;
+
   height: 80vh;
   width: 100%;
   max-width: 900px;
@@ -10,11 +11,11 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
-  overflow: hidden;
+
 }
 
 .chat-header {
-  background-color: #3498db;
+  background-color: var(--dark-color);
   color: white;
   padding: 20px;
   display: flex;
@@ -39,7 +40,7 @@
 }
 
 .product-price {
-  color: #f39c12;
+  color: var(--white-color);
   font-weight: bold;
 }
 
@@ -59,6 +60,7 @@
 }
 
 .messages-area {
+  height: 200px;
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 15px;
@@ -66,7 +68,21 @@
   background-color: #ecf0f1;
   border-radius: 10px;
   padding-left: 10px;
+  
+  /* Custom scrollbar styling */
+  scrollbar-width: thin; 
+  scrollbar-color: var(--dark-color) #ecf0f1; 
 }
+
+.messages-area::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.messages-area::-webkit-scrollbar-track {
+  background-color: #ecf0f1; 
+  border-radius: 10px;
+}
+
 
 .messages-list {
   display: flex;
@@ -85,30 +101,18 @@
 
 .sent {
   align-self: flex-end;
-  background-color: #3498db;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .received {
   align-self: flex-start;
-  background-color: #f1f1f1;
-  color: #2c3e50;
+  background-color: var(--btn-hover);
+  color: var(--white-color)
 }
 
-.message-time {
-  font-size: 12px;
-  color: #7f8c8d;
-  text-align: right;
-  margin-top: 5px;
-}
 
-.typing-indicator {
-  color: #7f8c8d;
-  font-size: 14px;
-  font-style: italic;
-  margin-top: 10px;
-  animation: typing 1s infinite;
-}
+
 
 @keyframes typing {
   0% {
@@ -144,26 +148,26 @@
 }
 
 .message-input:focus {
-  border-color: #3498db;
+  border: 4px solid var(--primary-color);
 }
 
 .send-button {
   padding: 10px 20px;
   border: none;
   border-radius: 50%;
-  background-color: #3498db;
+  background-color: var(--primary-color);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .send-button:disabled {
-  background-color: #b0c4de;
+  background-color: var(--secondary-color);
   cursor: not-allowed;
 }
 
 .send-button:hover {
-  background-color: #2980b9;
+  background-color: var(--secondary-color);
 }
 
 /* Loading Spinner */

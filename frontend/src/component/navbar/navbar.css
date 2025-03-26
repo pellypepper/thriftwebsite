@@ -3,10 +3,10 @@ box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     height: 100px;
     padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content:    space-between;
     align-items: center;
-    background-color: rgb(38, 38, 38);
-    color: white;
+    background-color: var(--dark-color);
+    color: var(--white-color);
 }
 
 li{
@@ -17,17 +17,25 @@ li{
 nav{
     display: flex;
     justify-content: space-between;
-  
+
     align-items: center;
+    padding: 10px;
+}
+.acct-wrapper{
+
+    height: 100%;
+
 }
 nav ul li{
     display: inline-block;
     margin-right: 1rem;
     cursor: pointer;
+    font-size: var(--sm-xs);
 }
 .acct-wrapper .btn{
-    background-color: white;
+    background-color:var(--white-color);
     color: black;
+    font-size: var(--md-xs);
 }
 
 
@@ -35,7 +43,16 @@ nav div p{
     margin-right: 1rem;
 
 }
+.user-search{
 
+    display: flex;
+    align-items: center;
+justify-content: center;
+gap: 10px;
+    padding: 10px;
+ 
+    cursor: pointer;
+}
 
 .right-menu p{
     cursor: pointer;
@@ -43,9 +60,10 @@ nav div p{
 
 .search-wrapper{
     overflow: hidden;
-    border: 2px solid white;
+    border: 2px solid var(--white-color);
     width: 250px;
     height: 50px;
+    border-radius: 5px
 }
 
 .search-wrapper input{
@@ -55,46 +73,50 @@ nav div p{
     width: 80%;
     padding: 10px;
  
-    color: black;
+    color:  var(--dark-color);
+}
+
+.search-wrapper input::placeholder{
+font-size:  var(--sm-xs);
 }
 .search-wrapper button{
     border: none;
     height: 100%;
     width: 20%;
     cursor: pointer;
-    background-color: red;
+    background-color: var(--primary-color);
 }
 .search-results {
     display: block ;
     line-height: 1.8rem;
     padding: 20px;
-    background: white;
-    border: 1px solid #ccc;
+    background: var(--white-color);
+    border: 1px solidvar(--white-color);
     height: auto;
     width: 200px;
     overflow-y: auto;
     position: absolute;
     z-index: 999;
   margin-top: .3rem;
-    color: black;
+    color: var(--dark-color);
 }
 .search-results li:hover{
-    background-color: black;
-    color: white;
+    background-color: var(--dark-color);
+    color: var(--white-color);
 }
 
-aside .right-menu{
+ .right-menu{
  display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-aside .screen-lg{
+ .screen-lg{
     display: none;
 }
 
 ul li a{
-    color: white;
+    color: var(--white-color);
     text-decoration: none;
 }
 .signin-btn .btn{
@@ -114,7 +136,7 @@ ul li a{
         position: relative;
     }
       nav {
-        background-color: white;
+        background-color:var(--white-color);
         color: black;
 z-index: 999;
           position: absolute;
@@ -137,7 +159,7 @@ z-index: 999;
         width: 100%;
       }
       nav ul li a{
-        color:  black;
+        color:  var(--dark-color);
       }
       nav ul li{
        padding: 10px;
@@ -146,8 +168,8 @@ z-index: 999;
 
       }
       .signin-btn .btn{
-        background-color: black;
-        color: white;
+        background-color:  var(--dark-color);
+        color:var(--white-color);
     }
       .open{
         display: flex;
@@ -166,16 +188,66 @@ z-index: 999;
  nav div p{
     padding: 10px;
     margin-top: 1rem;
-    border-top:  2px solid rgba(0, 0, 0, 0.219);
+    border-top:  2px solid var(--dark-color);;
  }
 .search-wrapper{
+  position: absolute;
+  right: 50px;
+  width: 180px;
+  height: 40px;
+}
+
+.screen-sm{
     display: none;
 }
-aside .screen-sm{
-    display: none;
-}
-aside .screen-lg{
+.screen-lg{
     display: flex;
+    cursor: pointer;
+    font-size: var(--md-xs);
+}
+.user-search .userbutton{
+    position: absolute;
+    left: 20px;
 }
 
 }
+
+ 
+@media (max-width: 468px){
+    nav ul li{
+ 
+        font-size: var(--sm-xs);
+    }
+    .acct-wrapper .btn{
+    
+        font-size: var(--sm-xs);
+    }
+      
+  }
+
+   
+@media (min-width: 769px){
+    nav ul li{
+ 
+        font-size: var(--md-xs);
+    }
+    .acct-wrapper .btn{
+    
+        font-size: var(--lg-xs);
+    }
+      
+      
+  }
+
+  @media (min-width: 1024px){
+    nav ul li{
+ 
+        font-size: var(--lg-sm);
+    }
+    .acct-wrapper .btn{
+    
+        font-size: var(--lg-sm);
+    }
+      
+      
+  }

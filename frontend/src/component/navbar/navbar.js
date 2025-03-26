@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight,  faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/clerk-react";
+import Spinner from '../spinner/spinner'; // Import your spinner component
 
 
 import { setQuery, fetchSearchResults } from "../../features/searchSlice";
@@ -12,12 +13,22 @@ import "./navbar.css";
 
 export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, handleSignOut }) {
     const menuRef = useRef(null);
-    const searchRef = useRef(null); // 🔹 Ref for detecting outside clicks
+    const searchRef = useRef(null); 
      const dispatch = useDispatch();
     const { query, results } = useSelector(state => state.search);
     const navigate = useNavigate()
-    const [showResults, setShowResults] = useState(false); // 🔹 State to control dropdown visibility
+    const [showResults, setShowResults] = useState(false); 
+    const [isLoading, setIsLoading] = useState(false);
 
+    const handleMenuClick = async () => {
+        setIsLoading(true); 
+    
+       
+        setTimeout(() => {
+          setIsLoading(false); 
+
+        }, 2000); 
+      };
 
     const handleToggle = () => {
         if (menuRef.current) {
@@ -38,7 +49,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
 
         if (searchQuery.trim().length > 0) {
             dispatch(fetchSearchResults(searchQuery));
-            setShowResults(true); // 🔹 Show results when typing
+            setShowResults(true); 
         } else {
             setShowResults(false);
         }
@@ -67,20 +78,21 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
     return (
         <main>
             <header>
-                <div className="logo-wrapper"></div>
-
+     
+                  <div className="logo-wrapper">
+                       
+                  </div>
                 <nav ref={menuRef}>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li>Categories</li>
-                        <li>Deals</li>
-                        <li onClick={handleSellClick}>Sell</li>
-                        <li> <Link to='/listing'>My listings</Link></li>
-                        <li>Help</li>
-                        <li className="userbutton">
-                            <UserButton afterSignOutCallback={handleSignOut} />
-                        </li>
-                    </ul>
+                {isLoading && <Spinner />}
+                <ul>
+        <li><Link to="/" onClick={handleMenuClick}>Home</Link></li>
+        <li onClick={handleMenuClick}>Categories</li>
+       
+        <li onClick={handleSellClick}>Sell</li>
+        <li><Link to="/inbox" onClick={handleMenuClick}>Inbox</Link></li>
+        <li><Link to="/listing" onClick={handleMenuClick}>My Listing</Link></li>
+      
+      </ul>
                     <div className="acct-wrapper">
                         <SignedOut>
                             <div className="signin-btn">
@@ -101,6 +113,10 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                 </nav>
 
                 {/* 🔹 Search Wrapper with ref */}
+               <div className="user-search">
+               <div className="userbutton">
+                            <UserButton afterSignOutCallback={handleSignOut} />
+                        </div>
                 <div className="search-wrapper" ref={searchRef}>
                     <input
                         type="text"
@@ -110,8 +126,9 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                         onFocus={() => setShowResults(true)} // 🔹 Show results when clicking inside
                     />
                     <button aria-label="Search">
-                        <FontAwesomeIcon icon={faArrowRight} />
+                        <FontAwesomeIcon className="search-icon" icon={faArrowRight} />
                     </button>
+                  
                     
                     {/* 🔹 Conditionally render search results */}
                     {showResults && results.length > 0 && (
@@ -122,12 +139,14 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                         </ul>
                     )}
                 </div>
+               </div>
+             
 
-                <aside>
-                    <div className="right-menu screen-lg">
-                        <FontAwesomeIcon icon={faSearch} />
-                        <FontAwesomeIcon icon={faBars} onClick={handleToggle} />
-                    </div>
+                <aside className="right-menu screen-lg">
+    
+             
+                        <FontAwesomeIcon style={{ fontSize: '25px' }} icon={faBars} onClick={handleToggle} />
+              
                 </aside>
             </header>
         </main>

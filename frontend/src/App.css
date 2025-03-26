@@ -12,7 +12,31 @@ body{
 
 
 :root{
-  --primary-color: #e74c3c;
-  --btn-hover : #c0392b;
+  --primary-color: #A29F15;
+  --secondary-color: #BBD8B3;
+  --dark-color: #191102;
+  --white-color: #fff;
+  --white-color-2:  #ffffff;
+  --btn-hover : #510D0A;
+  --delete-color: #e74c3c;
+
+
+  --md-chat : 14px;
+  --md-xs : 16px;
+  --md-sm: 20px;
+  --md-md: 24px;
+  --md-lg: 28px;
+
+  --sm-chat : 12px;
+  --sm-xs : 14px;
+  --sm-sm: 18px;
+  --sm-md: 22px;
+  --sm-lg: 26px;
+
+  --lg-chat : 20px;
+  --lg-xs : 18px;
+  --lg-sm: 22px;
+  --lg-md: 26px;
+  --lg-lg: 30px;
   
 }

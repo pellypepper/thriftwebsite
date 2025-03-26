@@ -50,6 +50,22 @@ export default function Details({buyerId}) {
         </div>
 
         <div className="details-flex-wrapper">
+          <div className="details-image-split">
+            <div className="split-1">
+            <img src={product.image_url} alt={product.title} />
+            </div>
+            <div className="split-2">
+            <img src={product.image_url} alt={product.title} />
+            </div>
+            <div className="split-3">
+            <img src={product.image_url} alt={product.title} />
+            </div>
+            <div className="split-4">
+            <img src={product.image_url} alt={product.title} />
+            </div>
+            
+
+          </div>
           <div className="details-image-wrapper">
             <img src={product.image_url} alt={product.title} />
           </div>

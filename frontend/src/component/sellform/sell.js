@@ -6,6 +6,8 @@ import Category from '../util/category';
 import Condition from '../util/condition';
 import Location from '../util/location';
 import { useUser } from "@clerk/clerk-react";
+import Spinner from '../spinner/spinner';
+import Notification from '../notification/notify';
 
 
 const Sell = ({ sellRef }) => {
@@ -19,6 +21,11 @@ const Sell = ({ sellRef }) => {
   const { user: clerkUser } = useUser(); 
   const dispatch = useDispatch();
   const { loading} = useSelector((state) => state.sell);
+  
+  const [showNotification, setShowNotification] = useState(false); 
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationType, setNotificationType] = useState('');
+
 
   const handleCloseForm = () => {
     if (sellRef && sellRef.current) {
@@ -48,6 +55,11 @@ const Sell = ({ sellRef }) => {
     };
 
     let mainCategory = categoryToMainCategory[category] || 'Other';
+    
+    if (!title || !price || !description || !file || !condition || !location || !category) {
+      alert('Please fill all fields');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('title', title);
@@ -60,13 +72,30 @@ const Sell = ({ sellRef }) => {
     formData.append('main_category', mainCategory);
     formData.append('clerk_id', clerkUser.id);
 
-console.log(formData);
 
-    dispatch(postListing(formData));
+
+    try {
+      const response = await dispatch(postListing(formData));
+      
+     
+      if (response.payload) {
+        setNotificationMessage('Product added successfully!');
+        setNotificationType('success');
+      
+      } else {
+        setNotificationMessage('Something went wrong!');
+        setNotificationType('error');
+      }
+      setShowNotification(true);
+    } catch (error) {
+      setNotificationMessage('Error submitting your product!');
+      setNotificationType('error');
+      setShowNotification(true);
+    }
   };
 
   return (
-    <section className='sellform-container'>
+    <section className='sellform-container '>
       <form onSubmit={handleFormSubmit}>
         <div className='form-text'>
           <h1>New Listing</h1>
@@ -94,10 +123,20 @@ console.log(formData);
           <Location selectedLocation={location} setSelectedLocation={setLocation} />
         </div>
         <button type='submit' disabled={loading}>
-          {loading ? 'Publishing...' : 'Publish'}
+        {loading ? <Spinner /> : 'Publish'}
         </button>
    
       </form>
+
+      {showNotification && (
+        <Notification
+          message={notificationMessage}
+          type={notificationType}
+          onClose={() => setShowNotification(false)} // Close the notification after 5 seconds
+        />
+      )}
+
+
     </section>
   );
 };

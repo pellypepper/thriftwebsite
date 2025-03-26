@@ -1,37 +1,52 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
-
-export const getChatId = createAsyncThunk('listing/getChatId', async (userId) => {
-    const response = await fetch(`http://localhost:5000/listing/getChatId/${userId}`, {
+export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId) => {
+    const response = await fetch(`http://localhost:5000/listing/getUserItem/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
+ 
     const data = await response.json();
-
+ 
     return data;
   });
 
-  export const getCombineInfo = createAsyncThunk('listing/getInfo', async (chatIds) => {
-    const response = await fetch(`http://localhost:5000/listing/getInfo`, {
-      method: 'POST',
+  export const updateUserItem = createAsyncThunk('listing/updateUserItem', async (updatedItem) => {
+    const response = await fetch(`http://localhost:5000/listing/getUserItem`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({chatIds})
+    
+      body: JSON.stringify(updatedItem)
+ 
     });
 
+    const data = await response.json();
+  
+    return data;
+  });
+
+
+  export const deleteUserItem = createAsyncThunk('listing/deleteUserItem', async ({userId, id}) => {
+    const response = await fetch(`http://localhost:5000/listing/deleteUserItem/${userId}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+  
     const data = await response.json();
 
     return data;
   });
 
   const initialState = {
-    chatId: [],
-    combineInfo : [],
+    items: [],
     loading: false,
     error: null,
   };
@@ -43,36 +58,36 @@ export const getChatId = createAsyncThunk('listing/getChatId', async (userId) =>
     },
     extraReducers: (builder) => {
       builder
-        .addCase(getChatId.pending, (state) => {
+        .addCase(getUserItem.pending, (state) => {
           state.loading = true;
           state.error = null; 
         })
-        .addCase(getChatId.fulfilled, (state, action) => {
+        .addCase(getUserItem.fulfilled, (state, action) => {
           state.loading = false;
-          if (Array.isArray(action.payload)) {
-            state.chatId = action.payload.map(item => item.chat_id);
-        } else {
-            
-            state.chatId = [];
+          state.items = Array.isArray(action.payload) ? action.payload : [];
+        })
+        .addCase(getUserItem.rejected, (state, action) => {
+       state.loading = false;
+        state.error = action.error.message;
         }
+
+        )
+        .addCase(updateUserItem.fulfilled, (state, action) => {
+        
+            const updatedItem = action.payload;
+            const index = state.items.findIndex(item => item.id === updatedItem.id);
+            if (index !== -1) {
+                state.items[index] = updatedItem;
+            }
         })
-        .addCase(getChatId.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.error.message; 
-        })
-        .addCase(getCombineInfo.pending, (state)=>{
-            state.loading = true;
-            state.error = null; 
-        })
-        .addCase(getCombineInfo.fulfilled, (state, action)=>{
-            state.loading = false;
-            state.combineInfo = action.payload; 
-        })
-        .addCase(getCombineInfo.rejected, (state, action)=>{
-            state.loading = false;
-            state.error = action.error.message; 
-        })
+        .addCase(deleteUserItem.fulfilled, (state, action) => {
+          
+            state.items = state.items.filter(item => item.id !== action.payload.id);
+        });
     },
   });
-  
+
+
+
   export default listSlice.reducer;
+  

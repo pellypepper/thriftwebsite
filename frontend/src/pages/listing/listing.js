@@ -1,226 +1,156 @@
-import React, { useEffect , useState} from "react";
-import Navbar from "../../component/navbar/navbar";
-import "./listing.css";
-import { useDispatch, useSelector } from 'react-redux';
-import { getChatId, getCombineInfo } from '../../features/listSlice'; // Ensure correct path
-import { getUsers, getMessages , sendMessage, deleteMessages} from '../../features/chatSlice'; // Ensure correct path
-import { io } from 'socket.io-client';
+import React, { useState, useEffect } from 'react';
+import './listing.css'
+import Navbar from '../../component/navbar/navbar';
+import { useDispatch , useSelector} from 'react-redux';
+import {getUserItem, updateUserItem, deleteUserItem} from '../../features/listSlice';
+import Notification from '../../component/notification/notify';
 
-
-const socket = io('http://localhost:5000');
-
-export default function Listing({ userId }) {
-    const dispatch = useDispatch();
-    const { chatId, combineInfo, loading, error } = useSelector((state) => state.list); // Access Redux state
-    const [message, setMessage] = useState(null)
-    const [newMessage, setNewMessage] = useState('')
-      const [isSending, setIsSending] = useState(false);
-      const [currentChatId , setCurrentChatId] = useState('')
-      const [sellerUserId, setSellerUserId] = useState('')
-      const [updatedCombine, setUpdatedCombine] = useState([])
-      const [user , setUser]= useState('')
-
-    useEffect(() => {
-        const fetchChatId = async () => {
+const Listing = ({userId}) => {
+     const dispatch = useDispatch();
     
-        if(!userId) {
-            return 'signin to continue'
-        }
-
-            try {
-                // Fetch user data (ensure correct response format)
-                const buyerData = await dispatch(getUsers(userId)).unwrap();
-                setUser(buyerData[0].id)
-                if (buyerData[0]?.id) {
-                    // Dispatch getChatId with the user ID
-                   await dispatch(getChatId(buyerData[0].id));
-                
-                  
-                } else {
-                    alert('you need to login')
-                }
-            } catch (error) {
-                console.error("Error fetching chat ID or user data:", error);
-            }
-        };
-
-        fetchChatId();
-    }, [dispatch, userId]);
-
-    useEffect(() => {
-        if (chatId.length > 0) {
-           
-          dispatch(getCombineInfo(chatId));
-        }
-      }, [chatId, dispatch]); 
-      useEffect(() => {
-        setUpdatedCombine(combineInfo, 'newcombine')
-    
-      }, [currentChatId, combineInfo]);
-      
-      const handleViewChat = async(chat_id, sellerId) =>{
-
-
-                if(chat_id){
-                  const message =  await dispatch(getMessages(chat_id)).unwrap()
-           
-                  setMessage(message)
-                  setCurrentChatId(chat_id)
-                  setSellerUserId(sellerId)
-                  
-                  
-                } else{
-                    setMessage(null);
-                }
-      }
-      
-      const handleInputChange = (e) => {
-        setNewMessage(e.target.value);
+     const { items = [], loading = false, error = null } = useSelector((state) => state.list || {}); 
+     const [products, setProducts] = useState([]);
      
-        if (currentChatId && user) {
-          socket.emit('typing', { chat_id: currentChatId, user_id: user });
-        }
-      };
-    
-      const handleSendMessage = async () => {
-   
-            
-                 
-               
-          if (currentChatId && user && newMessage.trim()) {
+       const [showNotification, setShowNotification] = useState(false); 
+       const [notificationMessage, setNotificationMessage] = useState('');
+       const [notificationType, setNotificationType] = useState('');
+ 
+     useEffect(() => {
+         try {
+            dispatch(getUserItem(userId));
+         } catch (error) {
+            console.error('Error fetching items:', error);
+         }
+     }, [dispatch, userId]);
 
-             try {
-               const senderType = user === sellerUserId ? "Seller" : "Buyer";
-        
-               
-               const messageData = {
-                 chat_id: currentChatId,
-                 sender_id: user,
-                 message_text: newMessage,
-                 message_sender: senderType
-               };
-               
-       
-              
-               
-               
-                await dispatch(sendMessage(messageData)).unwrap();
-            
-               
-               // Emit via socket if needed
-               socket.emit('send-message', messageData);
-               
-       
-               setNewMessage('');
-       
-               const updatedMessages = await dispatch(getMessages(currentChatId)).unwrap();
-               setMessage(updatedMessages);
-             } catch (error) {
-               console.error('Error in handleSendMessage:', error);
-             
-             }
-           }
+     useEffect(() => {
+
+        if (items && items.length > 0) {
+            setProducts(items);
         }
-        const handleDelete = async (chat) => {
+     }, [items]);
+
+  const handleMarkAsSold = async (id, available) => {
            
-            if (!chat) {
-              return 'No chat ID found';
-            }
+        try {
+          const newAvailability = !available;
+ 
+        const newUpdatedItem =   await  dispatch(updateUserItem({userId, itemId: id, available: newAvailability })).unwrap();
+        if(newUpdatedItem){
+          setProducts(products.map(product => 
+            product.id === id ? { ...product, available: !product.available } : product
+          ));
+        } else {
+          return 'unable to update item'
+        }
+       
+        } catch (error){
+          return error.message
+        }
+    
+   
+  };
+    
+    
+  
 
-          
-            // Dispatch the deleteMessages async action
-            await dispatch(deleteMessages(chat));
-            const filter = updatedCombine.filter( prev => prev.chat_id !== chat)
-            setUpdatedCombine(filter)
+  const handleDeleteProduct = async (id) => {
+    try {
+      const deletedItem = await dispatch(deleteUserItem({ userId, id })).unwrap();
 
-            const updatedCombineInfo = chatId.filter(prev => prev !== chat);
-          
-            dispatch(getCombineInfo(updatedCombineInfo));
-          };
-          
+      if (deletedItem) {
+        setProducts(products.filter(product => product.id !== id));
+        setNotificationMessage('Product deleted successfully!');
+        setNotificationType('success');
+        setShowNotification(true);
+      } else {
+        setNotificationMessage('Failed to delete product.');
+        setNotificationType('error');
+        setShowNotification(true);
+      }
+    } catch (error) {
+      setNotificationMessage('Error deleting the product.');
+      setNotificationType('error');
+      setShowNotification(true);
+      console.error('Error:', error.message);
+    }
+  };
 
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error: {error}</p>;
-    return (
-        <main className="listing-main">
-            <section className="listing">
-                <Navbar />
-            </section>
+  return (
+    <div className="product-listing-container">
+    
 
-            <section className="listing-component">
-                <div className="listing-grid">
-                    <div className="message-container">
-                        <h3>Messages</h3>
-                        {updatedCombine.length > 0 ?   (
-                            <div>
-                                {updatedCombine.map((prod) => (
-                            <div  onClick={() => handleViewChat(prod.chatId, prod.sellerId)}  className="message-listing" key={prod.chatId}>
-                                <div className="listing-icon">
-                                    <img src={`${prod.image_url}`} alt={prod.name} />
-                                </div>
 
-                                <div className="listing-info">
-                                    <h3>{prod.title}</h3>
-                                    <p>{prod.message_text}</p>
-                                </div>
-                                <button onClick={()=> handleDelete(prod.chatId)}> {loading ? 'Deleting...' : 'Delete'}</button>
-                          
-                            </div>
-                        ))}
-                            </div>
-                        ) : (
-                            <p> No Active Message</p>
-                        )}
-                    </div>
-
-                    <div className="listing-chat">
-                        <div className="listing-chat-container">
-                           
-                        {message ? (
-                                <div className="listing-div-1">
-                                  
-                                    {message.length > 0 ? (
-                                       <div className="message-split">
-                                           <div className="listing-div-2">
-                                            {message.map((msg) => (
-                                                <div className="msg-list"  key={msg.message_id}>
-                                                    <p key={msg.message_id}>{msg.message_sender}: {msg.message_text}</p>
-                                                    <p >{msg.timestamp}</p>
-                                                </div>
-                                            
-                                            ))}
-                                  
-                                        </div>
-                                                    <div className="listing-input-area">
-                                                    <input
-                                                      type="text"
-                                                      placeholder="Type your message..."
-                                                      value={newMessage}
-                                                      onChange={handleInputChange}
-                                                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                                      disabled={isSending}
-                                                      className="message-input"
-                                                    />
-                                                    <button 
-                                                      onClick={handleSendMessage} 
-                                                
-                                                      className="send-button"
-                                                    >
-                                                      {isSending ? 'Sending...' : 'Send'}
-                                                    </button>
-                                                  </div>
-                                        </div>
-                                    ) : (
-                                        <p>No messages found for this chat.</p>
-                                    )}
-                                </div>
-                            ) : (
-                                <p>Select a chat to view messages.</p>
-                            )}
-                        </div>
-                    </div>
+      <section>
+        <Navbar />
+      </section>
+      
+      <section className='box-container'>
+      <div className="product-grid">
+        {products.map((product) => (
+          <div 
+            key={product.id} 
+            className={`product-card ${product.available ? 'sold' : ''}`}
+          >
+            <div className="product-image-container">
+              <img 
+                src={product.image_url} 
+                alt={product.title} 
+                className="product-image"
+              />
+              {product.available && (
+                <div className="sold-badge">Sold</div>
+              )}
+            </div>
+            
+            <div className="product-details">
+              <h4 className="product-title">{product.title}</h4>
+              <p className="product-description">{product.description}</p>
+              
+              <div className="product-footer">
+                <div className="product-pricing">
+                  <p className="product-price">${product.price}</p>
+                  <span className="product-date">
+                    Listed on {new Date(product.created_at).toLocaleDateString()}
+                  </span>
                 </div>
-            </section>
-        </main>
-    );
-}
+                
+                <div className="product-actions">
+                  <button 
+                    onClick={() => handleMarkAsSold(product.id, product.available)}                   
+                    className={`action-button ${product.available ? 'mark-available' : 'mark-sold'}`}
+                  >
+                    {product.available ? 'Mark sold' : 'Mark available'}
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteProduct(product.id)}
+                    className="action-button delete"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </section>
+      
+      {products.length === 0 && (
+        <div className="empty-state">
+          <p>No products listed yet</p>
+        </div>
+      )}
+
+{showNotification && (
+        <Notification
+          message={notificationMessage}
+          type={notificationType}
+          onClose={() => setShowNotification(false)} // Hide notification after 5 seconds
+        />
+      )}
+    </div>
+  );
+};
+
+export default Listing;

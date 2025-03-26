@@ -1,16 +1,20 @@
+
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/authSlice';
+import chatReducer from './features/chatSlice';
 import sellReducer from './features/sellSlice';
 import searchReducer from './features/searchSlice';
-import listReducer from './features/listSlice'
+import inboxReducer from './features/inboxSlice'
+import listReducer from './features/listSlice';
 
-const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        sell: sellReducer,
-        search: searchReducer,
-        list: listReducer
-    },
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    chat: chatReducer,
+    sell: sellReducer, 
+    search: searchReducer ,
+    inbox: inboxReducer,
+    list: listReducer
+  }
 });
-
 export default store;

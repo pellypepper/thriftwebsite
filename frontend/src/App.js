@@ -8,6 +8,7 @@ import ChatPage from './pages/chat/chat';
 import {  useUser, useAuth} from "@clerk/clerk-react";
 import { setToken, fetchUserData, sendClerkDataToBackend, clearAuth } from "./features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Inbox from "./pages/inbox/inbox";
 import Listing from "./pages/listing/listing";
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
       <Route path="/user" element={<User />} />
       <Route path="/details" element={<Details buyerId={clerkUser?.id} />} />
       <Route path="/chat" element={<ChatPage  buyerId={clerkUser?.id} />} />
+      <Route path="/inbox" element={<Inbox userId={clerkUser?.id} />} />
       <Route path="/listing" element={<Listing userId={clerkUser?.id} />} />
     </Routes>
   </Router>
