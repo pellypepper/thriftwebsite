@@ -10,7 +10,8 @@ const userRoutes = require('./backend/routes/user');
 const sellRouter = require('./backend/routes/sell'); 
 const productRouter = require('./backend/routes/product'); 
 const chatRouter = require('./backend/routes/chat');
-const listingRouter = require('./backend/routes/listing');
+const inboxRouter = require('./backend/routes/inbox');
+const listRouter =  require('./backend/routes/listing');
 const pool = require('./database/db');
 const bodyParser = require('body-parser');
 const app = express();
@@ -47,8 +48,8 @@ app.use('/user', userRoutes);
 app.use('/api/sell', sellRouter);
 app.use('/api/product', productRouter);
 app.use('/chat', chatRouter);
-app.use('/listing', listingRouter);
-
+app.use('/inbox', inboxRouter);
+app.use('/listing', listRouter);
 
 
 io.on('connection', (socket) => {

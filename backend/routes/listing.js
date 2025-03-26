@@ -5,126 +5,83 @@ const pool = require('../../database/db');
 
 
 
-router.get('/getChatId/:userId', async (req, res) => {
-const { userId } = req.params;
-    try {
-        const chatQuery = `
-        SELECT chat_id FROM chats 
-        WHERE buyer_id = $1 OR seller_id = $1
+router.get('/getUserItem/:userId', async (req, res) => {
+        const { userId } = req.params;
+        if(!userId){
+            res.status(400).json({ message: 'user id is required' });
+        }
+
+        try {
+            const userItemQuery = `
+            SELECT * FROM items
+            WHERE clerk_id = $1
+            `;
+            const result = await pool.query(userItemQuery, [userId]);
+            if(result.rows.length === 0){
+                return res.json({ message: 'No item available' });
+            }
+            else {
+              return  res.json(result.rows);
+            }
+        } catch (error) {
+            console.error('Error fetching user item:', error);
+            res.status(500).json({ message: 'Error fetching user item' });
+        }
+})
+
+router.put('/getUserItem', async (req, res) => {
+       const {userId,itemId,available} = req.body
+
+       if (!userId || available === undefined || !itemId){
+        return res.status(400).json({ message: 'userId and itemId are required' });
+    }
+       try {
+        const updateItemQuery = `
+        UPDATE items
+        SET available = $1
+        WHERE clerk_id = $2 AND id = $3
+        RETURNING *
         `;
-        const result = await pool.query(chatQuery, [userId]);
+        const result = await pool.query(updateItemQuery, [ available,userId,itemId]);
         if(result.rows.length === 0){
-            return res.json({ message: 'No chat available' });
+            return res.json({ message: 'No item available' });
         }
         else {
           return  res.json(result.rows);
         }
     } catch (error) {
-        console.error('Error fetching chat:', error);
-        res.status(500).json({ message: 'Error fetching chat id ' });
-    }
+        console.error('Error fetching user item:', error);
+        res.status(500).json({ message: 'Error fetching user item' });
+       }
+
 })
 
-router.post('/getInfo', async (req, res) => {
-    const { chatIds } = req.body; 
 
-    if (!chatIds || chatIds.length === 0) {
-
-        return res.status(400).json({ message: 'No chatIds provided' });
+router.delete('/deleteUserItem/:userId/:itemId', async (req, res) => {
+    const { userId,itemId } = req.params;
+    if(!userId || !itemId){
+        res.status(400).json({ message: 'user id and item id is required' });
     }
-
-
 
     try {
-        // placeholders for chatIds SQL query
-        const chatPlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
-
-        //fetch item_ids associated with provided chatIds
-        const chatQuery = `
-            SELECT chat_id, item_id, seller_id, buyer_id
-            FROM chats
-            WHERE chat_id IN (${chatPlaceholders})
+        const userItemQuery = `
+        DELETE FROM items
+        WHERE clerk_id = $1 AND id = $2
         `;
-
-        const result = await pool.query(chatQuery, chatIds);
-
-        if (result.rows.length === 0) {
-         
-            return res.json({ message: 'No chats found for the provided chatIds' });
+        const result = await pool.query(userItemQuery, [userId,itemId]);
+        if(result.rows.length === 0){
+            return res.json({ message: 'No item available' });
         }
-
-        // Extract item_ids from the result
-        const itemIds = result.rows.map(row => row.item_id);
-
-
-        // Generate item query placeholders
-        const itemPlaceholders = itemIds.map((_, index) => `$${index + 1}`).join(', ');
-        const itemQuery = `
-            SELECT id, title, image_url
-            FROM items
-            WHERE id IN (${itemPlaceholders})
-        `;
-   
-        const itemResult = await pool.query(itemQuery, itemIds);
-
-        // Generate message query placeholders for chatIds (use different placeholder set)
-        const messagePlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
-        const messagePlaceholdersSubquery = chatIds.map((_, index) => `$${index + 1 + chatIds.length}`).join(', ');
-        
-        // Fix: Subquery to get MAX(message_id) for each chat_id
-   
-const messageQuery = `
-SELECT chat_id, message_text       
-FROM messages
-WHERE chat_id IN (${messagePlaceholders})      
-AND message_id IN (
-    SELECT MAX(message_id)
-    FROM messages
-    WHERE chat_id IN (${messagePlaceholdersSubquery})
-    GROUP BY chat_id
-)
-`;
-
-
-const messageResult = await pool.query(messageQuery, [...chatIds, ...chatIds]);
-
-        // Check if itemResult or messageResult is empty
-        if (itemResult.rows.length === 0) {
-            console.error('No items found for the provided itemIds:', itemIds);
+        else {
+          return  res.json(result.rows);
         }
-        if (messageResult.rows.length === 0) {
-            console.error('No messages found for the provided chatIds:', chatIds);
-        }
-
-        // Return the combined result (chat info, items, and messages)
-        const combinedResult = chatIds.map(chatId => {
-            const chatInfo = result.rows.find(row => row.chat_id === chatId);
-            const itemInfo = itemResult.rows.find(row => row.id === chatInfo.item_id);
-            const messageInfo = messageResult.rows.find(row => row.chat_id === chatId);
-
-            return {
-                chatId: chatId,
-                sellerId: chatInfo.seller_id,
-                buyerId: chatInfo.buyer_id,
-                message_text: messageInfo ? messageInfo.message_text : null,
-                title: itemInfo ? itemInfo.title : null,
-                image_url: itemInfo ? itemInfo.image_url : null
-            };
-        });
-
-        // Return the combined result (message_text, title, image_url)
-        return res.json(combinedResult);
     } catch (error) {
-        console.error('Error fetching chat info:', error);
-        res.status(500).json({ message: 'Error fetching chat info' });
+        console.error('Error fetching user item:', error);
+        res.status(500).json({ message: 'Error fetching user item' });
     }
-});
 
 
-
-
-
-
+})
 
 
 

@@ -18,9 +18,11 @@ CREATE TABLE items (
     condition VARCHAR(100),               -- Condition (e.g., 'new', 'used', etc.)
     location VARCHAR(255),                -- Location of the item
     category VARCHAR(100),                -- Category of the item (e.g., 'electronics', 'furniture')
+    main_category VARCHAR(100),          -- Main category of the item (e.g., 'electronics', 'furniture')
     image_url TEXT NOT NULL,               -- URL for the item's image
     clerk_id TEXT NOT NULL,               -- ID of the clerk responsible for the item
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp for when the record was created
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for when the record was created
+    available BOOLEAN DEFAULT TRUE         -- Availability of the item
 );
 
 -- Table to store chats between users
