@@ -36,13 +36,15 @@ router.put('/getUserItem', async (req, res) => {
         return res.status(400).json({ message: 'userId and itemId are required' });
     }
        try {
+         
+       const newAvailability = !available;
         const updateItemQuery = `
         UPDATE items
         SET available = $1
         WHERE clerk_id = $2 AND id = $3
         RETURNING *
         `;
-        const result = await pool.query(updateItemQuery, [ available,userId,itemId]);
+        const result = await pool.query(updateItemQuery, [ newAvailability,userId,itemId]);
         if(result.rows.length === 0){
             return res.json({ message: 'No item available' });
         }
@@ -58,30 +60,33 @@ router.put('/getUserItem', async (req, res) => {
 
 
 router.delete('/deleteUserItem/:userId/:itemId', async (req, res) => {
-    const { userId,itemId } = req.params;
-    if(!userId || !itemId){
-        res.status(400).json({ message: 'user id and item id is required' });
+    const { userId, itemId } = req.params;
+
+ 
+    if (!userId || !itemId) {
+        return res.status(400).json({ message: 'user id and item id are required' });
     }
 
     try {
         const userItemQuery = `
         DELETE FROM items
         WHERE clerk_id = $1 AND id = $2
+        RETURNING *;  
         `;
-        const result = await pool.query(userItemQuery, [userId,itemId]);
-        if(result.rows.length === 0){
-            return res.json({ message: 'No item available' });
+        const result = await pool.query(userItemQuery, [userId, itemId]);
+
+       
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'No item found with the provided userId and itemId' });
         }
-        else {
-          return  res.json(result.rows);
-        }
+
+        // Success response, confirming the item was deleted
+        return res.status(200).json({ message: 'Item successfully deleted' });
     } catch (error) {
-        console.error('Error fetching user item:', error);
-        res.status(500).json({ message: 'Error fetching user item' });
+        console.error('Error deleting user item:', error);
+        return res.status(500).json({ message: 'Error deleting user item' });
     }
-
-
-})
+});
 
 
 
