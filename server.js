@@ -52,44 +52,7 @@ app.use('/inbox', inboxRouter);
 app.use('/listing', listRouter);
 
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
 
-  // Listen for sending a message
-  socket.on('send-message', (messageData) => {
-    const { chat_id, sender_id, message_text } = messageData;
-
-    // Insert the message into the database
-    pool.query(
-      'INSERT INTO messages (chat_id, sender_id, message_text) VALUES ($1, $2, $3) RETURNING message_id',
-      [chat_id, sender_id, message_text],
-      (err, result) => {
-        if (err) {
-          console.error('Error sending message:', err);
-          return;
-        }
-
-        // Emit the message to the other users in the chat
-        io.emit('new-message', {
-          chat_id,
-          sender_id,
-          message_text,
-          message_id: result.rows[0].message_id,
-        });
-      }
-    );
-  });
-
-
-  socket.on('join-chat', (chat_id) => {
-    socket.join(chat_id); // Join a specific chat room based on the chat_id
-    console.log(`User joined chat room with chat_id: ${chat_id}`);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
-});
 
 
 app.use((err, req, res, next) => {
