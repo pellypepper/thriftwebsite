@@ -105,16 +105,18 @@ export default function Inbox({ userId }) {
                
                
                 await dispatch(sendMessage(messageData)).unwrap();
-            
-               
+   
+           
                // Emit via socket if needed
                socket.emit('send-message', messageData);
                
-       
+           
                setNewMessage('');
        
                const updatedMessages = await dispatch(getMessages(currentChatId)).unwrap();
+            
                setMessage(updatedMessages);
+              
              } catch (error) {
                console.error('Error in handleSendMessage:', error);
              

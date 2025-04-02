@@ -51,6 +51,7 @@ const ProductCard = ({ products }) => {
           <div className="product-info">
             <h4 className="product-title">{product.title}</h4>
             <p className="product-description">{product.description}</p>
+            <p>Category: {product.category} </p>
           <span className='product-price'>£{product.price}</span>
           </div>
         </div>

@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchItems } from '../../features/sellSlice';
 import ProductCard from './productCard';
 import './product.css';
+import { useNavigate } from "react-router-dom";
 
 const ProductList = ({ category, title }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const { items, loading, error } = useSelector((state) => state.sell);
 
     useEffect(() => {
@@ -13,10 +15,21 @@ const ProductList = ({ category, title }) => {
     }, [dispatch, category]);
 
     const categoryItems = items[category] || [];
+    
+    const handleCategory= (category) =>{
+       if(category === "Similar items"){
+         return 'not found'
+       }
+        navigate("/category", { state: { category: category } });
+      }
+
 
     return (
         <div className="product-container">
-            <h3>Trending in {title}</h3>
+             <div className='product-div'>
+             <h3>Trending in {title}</h3>
+             <p onClick={()=>handleCategory(category)}>See all </p>
+             </div>
             {loading ? (
                 <p>Loading...</p>
             ) : error ? (

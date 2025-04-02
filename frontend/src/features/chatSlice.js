@@ -23,7 +23,7 @@ export const sendMessage = createAsyncThunk(
        
         return rejectWithValue('Missing required message fields');
       }
-      
+      console.log(messageData)
       const response = await fetch('http://localhost:5000/chat/send-message', {
         method: 'POST',
         headers: {
@@ -36,7 +36,7 @@ export const sendMessage = createAsyncThunk(
         const errorData = await response.json();
         return rejectWithValue(errorData);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
@@ -79,7 +79,11 @@ const chatSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearMessages: (state) => {
+      state.messages = [];
+    }
+  },
   extraReducers: (builder) => {
  
     builder
@@ -106,7 +110,7 @@ const chatSlice = createSlice({
     })
     .addCase(sendMessage.fulfilled, (state, action) => {
       state.loading = false;
-      state.messages.push(action.payload);
+  
     })
     .addCase(sendMessage.rejected, (state, action) => {
       state.loading = false;
@@ -151,4 +155,5 @@ const chatSlice = createSlice({
   },
 });
 
+export const { clearMessages } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -83,8 +83,13 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
 
       const handleSubMenuClick = () => {
         // Toggle dropdown visibility
-        setIsDropdownOpen(!isDropdownOpen);
+     setIsDropdownOpen(!isDropdownOpen)
       };
+
+      const handleCategoryClick = (category) =>{
+        console.log(category)
+        navigate("/category", { state: { category: category } });
+      }
 
    
     return (
@@ -98,12 +103,16 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                 {isLoading && <Spinner />}
                 <ul>
         <li><Link to="/" onClick={handleMenuClick}>Home</Link></li>
-        <li className="category-nav" onClick={handleSubMenuClick}>Categories
-        <ul className="dropdown">
-              <li><Link to="/homegarden" onClick={handleMenuClick}>Home & Garden</Link></li>
-              <li><Link to="/entertainment" onClick={handleMenuClick}>Entertainment</Link></li>
-              <li><Link to="/clothing" onClick={handleMenuClick}>Clothing & Accessories</Link></li>
-            </ul>
+        <li className="category-nav" onClick={handleSubMenuClick}>
+          Categories
+          <ul className={`dropdown ${isDropdownOpen ? 'open' : ''}`}>
+            <li className="category-nav" onClick={() => handleCategoryClick('HomeGarden')}>
+              Home & Garden
+            </li>
+            <li className="category-nav" onClick={() => handleCategoryClick('Entertainment')}>
+              Entertainment
+            </li>
+          </ul>
         </li>
        
         <li onClick={handleSellClick}>Sell</li>

@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 import Navbar from "../../component/navbar/navbar";
-import {HomeGarden, Entertainment, Clothing} from "../../component/product/product";
+import {HomeGarden, Entertainment, Clothing, Electronics, Hobbies, Family} from "../../component/product/product";
 import "./home.css";
 import Sell from "../../component/sellform/sell";
 import Footer from "../../component/footer/footer";
@@ -30,6 +30,9 @@ export default function Home({clerkSyncStatus, clerkUser, loading, handleSignOut
               <HomeGarden /> 
               <Entertainment/>
               <Clothing/>
+              <Electronics />
+              <Family />
+              <Hobbies />
             </section>
 
              <section className="text-animate">

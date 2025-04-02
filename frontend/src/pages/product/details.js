@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import './details.css';
 import { Random } from "../../component/product/product"; 
+import Footer from "../../component/footer/footer";
 
 export default function Details({buyerId}) {
   const location = useLocation();
@@ -89,6 +90,9 @@ export default function Details({buyerId}) {
       </section>
       <section>
         <Random random={product.main_category} />
+      </section>
+      <section>
+        <Footer />
       </section>
     </main>
   );

@@ -28,10 +28,28 @@ const Category = ({selectedCategory, setSelectedCategory}) => {
 
         <optgroup label="Clothing & Accessories">
           <option value="Jewelry & Accessories">Jewelry & Accessories</option>
-          <option value="Bags">Bags & Luggage</option>
+          <option value="Bags & Luggage">Bags & Luggage</option>
           <option value="Men's Clothing & Shoes">Men's Clothing & Shoes</option>
           <option value="Women's Clothing & Shoes">Women's Clothing & Shoes</option>
         </optgroup>
+
+        <optgroup label="Family">
+    <option value="Toys & Games">Toys & Games</option>
+    <option value="Pet Supplies">Pet Supplies</option>
+    <option value="Health & Beauty">Health & Beauty</option>
+  </optgroup>
+
+  <optgroup label="Electronics">
+    <option value="Mobile Phones">Mobile Phones</option>
+    <option value="Electronics & Computers">Electronics & Computers</option>
+  </optgroup>
+
+  <optgroup label="Hobbies">
+    <option value="Sport & Outdoors">Sport & Outdoors</option>
+    <option value="Musical Instruments">Musical Instruments</option>
+    <option value="Bicycles">Bicycles</option>
+    <option value="Art & Crafts">Art & Crafts</option>
+  </optgroup>
       </select>
     </div>
   );

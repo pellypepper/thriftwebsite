@@ -10,6 +10,7 @@ import { setToken, fetchUserData, sendClerkDataToBackend, clearAuth } from "./fe
 import { useDispatch, useSelector } from "react-redux";
 import Inbox from "./pages/inbox/inbox";
 import Listing from "./pages/listing/listing";
+import Category from "./pages/categories/category";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
       <Route path="/chat" element={<ChatPage  buyerId={clerkUser?.id} />} />
       <Route path="/inbox" element={<Inbox userId={clerkUser?.id} />} />
       <Route path="/listing" element={<Listing userId={clerkUser?.id} />} />
+      <Route path="/category" element={<Category userId={clerkUser?.id} />} />
     </Routes>
   </Router>
   );

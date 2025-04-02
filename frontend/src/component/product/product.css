@@ -119,6 +119,17 @@ color: var(--primary-color)
     font-weight: 600;
     color: var(--dark-color) 
    }
+   .product-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   }
+
+   .product-div p{
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--primary-color);
+   }
   
   /* Responsive Design */
   @media (max-width: 768px) {

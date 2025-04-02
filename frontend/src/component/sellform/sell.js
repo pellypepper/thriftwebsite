@@ -40,6 +40,10 @@ const Sell = ({ sellRef }) => {
       alert('You need to Sign In to post a product');
       return;
     }
+    if (!title || !price || !description || !file || !condition || !location || !category) {
+      alert('Please fill all fields');
+      return;
+    }
     const categoryToMainCategory = {
       'Tools': 'HomeGarden',
       'Furniture': 'HomeGarden',
@@ -51,15 +55,21 @@ const Sell = ({ sellRef }) => {
       'Jewelry & Accessories': 'ClothingAccessories',
       'Bags & Luggage': 'ClothingAccessories',
       'Men\'s Clothing & Shoes': 'ClothingAccessories',
-      'Women\'s Clothing & Shoes': 'ClothingAccessories'
+      'Women\'s Clothing & Shoes': 'ClothingAccessories',
+      'Toys & Games': 'Family',
+       'Pet Supplies': 'Family',
+      'Health & Beauty': 'Family',
+     'Mobile Phones':  'Electronics',
+     'Electronics & Computers' : 'Electronics',
+     'Sport & Outdoors' : 'Hobbies',
+     'Musical Instruments' : 'Hobbies',
+     'Bicycles' : 'Hobbies',
+     'Art & Crafts' : 'Hobbies',
     };
 
     let mainCategory = categoryToMainCategory[category] || 'Other';
     
-    if (!title || !price || !description || !file || !condition || !location || !category) {
-      alert('Please fill all fields');
-      return;
-    }
+  
 
     const formData = new FormData();
     formData.append('title', title);
