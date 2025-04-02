@@ -1,0 +1,33 @@
+footer{
+    background-color:var(--dark-color);
+    color: white;
+    padding: 20px;
+  text-align: center;
+}
+
+
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .footer-content{
+        flex-direction: column;
+    
+    }
+    footer{
+      
+      text-align: center;
+    }
+    
+    .footer-2{
+        display: none;
+    }
+    
+}

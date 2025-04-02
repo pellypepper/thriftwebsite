@@ -19,6 +19,8 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
     const navigate = useNavigate()
     const [showResults, setShowResults] = useState(false); 
     const [isLoading, setIsLoading] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
 
     const handleMenuClick = async () => {
         setIsLoading(true); 
@@ -27,7 +29,7 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
         setTimeout(() => {
           setIsLoading(false); 
 
-        }, 2000); 
+        }, 3000); 
       };
 
     const handleToggle = () => {
@@ -38,8 +40,13 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
 
    
     const handleSellClick = () => {
+        
         if (sellRef && sellRef.current) {
             sellRef.current.classList.toggle("open");
+      
+           
+                 
+     
         } 
     };
 
@@ -74,6 +81,11 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
           navigate('/details', {state: {product}})
       }
 
+      const handleSubMenuClick = () => {
+        // Toggle dropdown visibility
+        setIsDropdownOpen(!isDropdownOpen);
+      };
+
    
     return (
         <main>
@@ -86,7 +98,13 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
                 {isLoading && <Spinner />}
                 <ul>
         <li><Link to="/" onClick={handleMenuClick}>Home</Link></li>
-        <li onClick={handleMenuClick}>Categories</li>
+        <li className="category-nav" onClick={handleSubMenuClick}>Categories
+        <ul className="dropdown">
+              <li><Link to="/homegarden" onClick={handleMenuClick}>Home & Garden</Link></li>
+              <li><Link to="/entertainment" onClick={handleMenuClick}>Entertainment</Link></li>
+              <li><Link to="/clothing" onClick={handleMenuClick}>Clothing & Accessories</Link></li>
+            </ul>
+        </li>
        
         <li onClick={handleSellClick}>Sell</li>
         <li><Link to="/inbox" onClick={handleMenuClick}>Inbox</Link></li>

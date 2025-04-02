@@ -12,23 +12,25 @@
     z-index: 1000;
   }
   
-  /* Styling the spinner */
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;  /* Light grey background for the spinner */
-    border-top: 5px solid #3498db;  /* Blue color for the spinning part */
-    border-radius: 50%;  /* Make it circular */
-    animation: spin 1.5s linear infinite;  /* Apply the spinning animation */
-  }
-  
-  /* The spin animation */
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);  /* Start rotation from 0 degrees */
-    }
-    100% {
-      transform: rotate(360deg);  /* Rotate it 360 degrees */
-    }
-  }
-  
+ /* HTML: <div class="loader"></div> */
+.loader {    
+  --r1: 154%;
+  --r2: 68.5%;
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%; 
+  background:
+    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,var(--primary-color) 80%),
+    radial-gradient(var(--r1) var(--r2) at bottom,var(--primary-color)  79.5%,#0000 80%),
+    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,var(--primary-color)  80%),
+    #ccc;
+  background-size: 50.5% 220%;
+  background-position: -100% 0%,0% 0%,100% 0%;
+  background-repeat:no-repeat;
+  animation: l9 2s infinite linear;
+}
+@keyframes l9 {
+    33%  {background-position:    0% 33% ,100% 33% ,200% 33% }
+    66%  {background-position: -100%  66%,0%   66% ,100% 66% }
+    100% {background-position:    0% 100%,100% 100%,200% 100%}
+}

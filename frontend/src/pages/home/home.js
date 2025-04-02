@@ -3,6 +3,9 @@ import Navbar from "../../component/navbar/navbar";
 import {HomeGarden, Entertainment, Clothing} from "../../component/product/product";
 import "./home.css";
 import Sell from "../../component/sellform/sell";
+import Footer from "../../component/footer/footer";
+
+
 
 export default function Home({clerkSyncStatus, clerkUser, loading, handleSignOut}) {
   const sellRef = useRef(null);
@@ -27,6 +30,14 @@ export default function Home({clerkSyncStatus, clerkUser, loading, handleSignOut
               <HomeGarden /> 
               <Entertainment/>
               <Clothing/>
+            </section>
+
+             <section className="text-animate">
+           
+             </section>
+            <section className="footer">
+
+           <Footer />
             </section>
 
 
