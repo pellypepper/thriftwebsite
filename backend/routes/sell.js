@@ -56,7 +56,7 @@ router.post('/form', async (req, res) => {
   try {
     // Handle the file upload first
     await handleUpload(req, res);
-console.log(req.body);
+
     const { title, price, description, condition, location, category, main_category, clerk_id } = req.body;
     if(!clerk_id) {
       return res.status(400).json({ error: 'You need to Sign In to post a product' });

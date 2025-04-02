@@ -26,36 +26,30 @@ const { userId } = req.params;
 })
 
 router.post('/getInfo', async (req, res) => {
-    const { chatIds } = req.body; 
+    const { chatIds } = req.body;
 
     if (!chatIds || chatIds.length === 0) {
-
         return res.status(400).json({ message: 'No chatIds provided' });
     }
 
-
-
     try {
-        // placeholders for chatIds SQL query
+        // Placeholders for chatIds SQL query
         const chatPlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
 
-        //fetch item_ids associated with provided chatIds
+        // Fetch chat details
         const chatQuery = `
             SELECT chat_id, item_id, seller_id, buyer_id
             FROM chats
             WHERE chat_id IN (${chatPlaceholders})
         `;
-
         const result = await pool.query(chatQuery, chatIds);
 
         if (result.rows.length === 0) {
-         
             return res.json({ message: 'No chats found for the provided chatIds' });
         }
 
         // Extract item_ids from the result
         const itemIds = result.rows.map(row => row.item_id);
-
 
         // Generate item query placeholders
         const itemPlaceholders = itemIds.map((_, index) => `$${index + 1}`).join(', ');
@@ -64,31 +58,20 @@ router.post('/getInfo', async (req, res) => {
             FROM items
             WHERE id IN (${itemPlaceholders})
         `;
-   
         const itemResult = await pool.query(itemQuery, itemIds);
 
         // Generate message query placeholders for chatIds (use different placeholder set)
         const messagePlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
-        const messagePlaceholdersSubquery = chatIds.map((_, index) => `$${index + 1 + chatIds.length}`).join(', ');
-        
-        // Fix: Subquery to get MAX(message_id) for each chat_id
-   
-const messageQuery = `
-SELECT chat_id, message_text       
-FROM messages
-WHERE chat_id IN (${messagePlaceholders})      
-AND message_id IN (
-    SELECT MAX(message_id)
-    FROM messages
-    WHERE chat_id IN (${messagePlaceholdersSubquery})
-    GROUP BY chat_id
-)
-`;
 
+        // Query to get the latest message per chat_id, ordered by timestamp
+        const messageQuery = `
+            SELECT chat_id, message_text, timestamp
+            FROM messages
+            WHERE chat_id IN (${messagePlaceholders})
+            ORDER BY timestamp DESC
+        `;
+        const messageResult = await pool.query(messageQuery, chatIds);
 
-const messageResult = await pool.query(messageQuery, [...chatIds, ...chatIds]);
-
-        // Check if itemResult or messageResult is empty
         if (itemResult.rows.length === 0) {
             console.error('No items found for the provided itemIds:', itemIds);
         }
@@ -96,10 +79,12 @@ const messageResult = await pool.query(messageQuery, [...chatIds, ...chatIds]);
             console.error('No messages found for the provided chatIds:', chatIds);
         }
 
-        // Return the combined result (chat info, items, and messages)
+        // Combine the results (chat info, items, and messages)
         const combinedResult = chatIds.map(chatId => {
             const chatInfo = result.rows.find(row => row.chat_id === chatId);
             const itemInfo = itemResult.rows.find(row => row.id === chatInfo.item_id);
+            
+            // Get the latest message (first message in ordered list)
             const messageInfo = messageResult.rows.find(row => row.chat_id === chatId);
 
             return {
@@ -107,18 +92,28 @@ const messageResult = await pool.query(messageQuery, [...chatIds, ...chatIds]);
                 sellerId: chatInfo.seller_id,
                 buyerId: chatInfo.buyer_id,
                 message_text: messageInfo ? messageInfo.message_text : null,
+                timestamp: messageInfo ? messageInfo.timestamp : null,  // Include timestamp of the latest message
                 title: itemInfo ? itemInfo.title : null,
                 image_url: itemInfo ? itemInfo.image_url : null
             };
         });
 
-        // Return the combined result (message_text, title, image_url)
-        return res.json(combinedResult);
+        // Sort the combined result by timestamp in descending order to ensure the most recent message is first
+        const sortedCombinedResult = combinedResult.sort((a, b) => {
+            const timestampA = new Date(a.timestamp);
+            const timestampB = new Date(b.timestamp);
+
+            return timestampB - timestampA;  // Sorting by timestamp descending (latest first)
+        });
+
+        // Return the sorted combined result (chat info, items, and messages)
+        return res.json(sortedCombinedResult);
     } catch (error) {
         console.error('Error fetching chat info:', error);
         res.status(500).json({ message: 'Error fetching chat info' });
     }
 });
+
 
 
 

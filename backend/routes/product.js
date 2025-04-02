@@ -13,8 +13,8 @@ router.get('/items', async (req, res) => {
     try {
         let response;
 
-        if (['HomeGarden', 'Entertainment', 'ClothingAccessories'].includes(category)) {
-          response = await pool.query('SELECT * FROM items WHERE main_category = $1 LIMIT $2 OFFSET $3', [category, limit, offset]);
+        if (['HomeGarden', 'Entertainment', 'ClothingAccessories', 'Hobbies', 'Electronics', 'Family'].includes(category)) {
+          response = await pool.query('SELECT * FROM items WHERE main_category = $1 AND available = true LIMIT $2 OFFSET $3', [category, limit, offset]);
         } 
         else  {
            const result = await pool.query('SELECT * FROM items WHERE category = $1 LIMIT $2 OFFSET $3', [category, limit, offset]);
