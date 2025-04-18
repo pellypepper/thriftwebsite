@@ -1,7 +1,9 @@
-// ProductCard.js
+
 import React,{useEffect, useState} from 'react';
 import './product.css';
 import { useNavigate } from 'react-router-dom';
+
+
 const ProductCard = ({ products }) => {
      const Navigate = useNavigate();
 
@@ -11,7 +13,7 @@ const ProductCard = ({ products }) => {
      const updateProductsToShow = () => {
        const width = window.innerWidth;
        if (width >= 1200) {
-         setProductsToShow(5); 
+         setProductsToShow(6); 
        } else if (width >= 768) {
          setProductsToShow(4);  
        } else {

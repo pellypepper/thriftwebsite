@@ -1,4 +1,4 @@
-// auth.test.js
+
 
 const verifyToken = require('../auth/auth'); 
 const { clerkClient } = require('@clerk/clerk-sdk-node');

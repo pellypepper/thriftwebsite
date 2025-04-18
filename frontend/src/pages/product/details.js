@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../component/navbar/navbar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +6,8 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import './details.css';
 import { Random } from "../../component/product/product"; 
 import Footer from "../../component/footer/footer";
+import Notification from '../../component/notification/notify';
+
 
 export default function Details({buyerId}) {
   const location = useLocation();
@@ -13,14 +15,25 @@ export default function Details({buyerId}) {
   const navigate = useNavigate();
    
 
+    const [showNotification, setShowNotification] = useState(false); 
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [notificationType, setNotificationType] = useState('');
+
+    const showNotify = (message, type = 'error') => {
+      setNotificationMessage(message);
+      setNotificationType(type);
+      setShowNotification(true);
+    };
+
   const handleNavigate = () => {
     if (product.clerk_id === buyerId ){
-      return alert('You cannot chat with yourself');
+         showNotify('You need to Sign In to post a product');
     }
     else{
       navigate("/chat", { state: { product } });
     }
   }
+
   
   useEffect(() => {
     if (!product) {
@@ -88,6 +101,16 @@ export default function Details({buyerId}) {
           </div>
         </div>
       </section>
+
+      {showNotification && (
+         <div className="notification-wrapper">
+    <Notification
+      message={notificationMessage}
+      type={notificationType}
+      onClose={() => setShowNotification(false)}
+    />
+  </div>
+)}
       <section>
         <Random random={product.main_category} />
       </section>

@@ -183,6 +183,33 @@ color: var(--primary-color)
       
   }
 
+  @media (max-width: 395px){
+    .product-container{
+   
+    }
+    .product-container h3{
+
+      font-size: var(--sm-xs);
+     
+      }
+      .product-title {
+        font-size: var(--sm-xs);
+      
+      }
+      
+      .product-description {
+        font-size: var(--sm-xs);
+     
+      }
+      
+      .product-info .product-price {
+        font-size: var(--sm-xs);
+     
+       }
+      
+  }
+
+
 
   @media (min-width: 769px){
  

@@ -13,7 +13,7 @@ const chatRouter = require('./backend/routes/chat');
 const inboxRouter = require('./backend/routes/inbox');
 const listRouter =  require('./backend/routes/listing');
 const pool = require('./database/db');
-const bodyParser = require('body-parser');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -39,8 +39,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.urlencoded({ extended: true }));
 
 
 // Routes

@@ -6,6 +6,7 @@ box-shadow:  0px 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
   background-color: var(--dark-color);
 color: var(--white-color);
+position: relative;
 
 }
 .sellform-container h1{
@@ -71,6 +72,8 @@ color: var(--white-color);
 height: 50px;
 }
 
+  
+
 @media screen and (max-width: 768px) {
     .sellform-container{
        width: 100%;
@@ -81,5 +84,19 @@ height: 50px;
         font-size: 1.5rem;
         display: flex;
     }
+  
+}
+
+@media screen and (max-width: 468px) {
+    .sellform-container input::placeholder{
+       font-size: var(--sm-xs);
+    }
+
+    .form-text h1{
+        font-size: var(--sm-sm);
+    }
+    .file-wrapper input[type="file"] {
+        font-size: 0.8rem; 
+      }
   
 }

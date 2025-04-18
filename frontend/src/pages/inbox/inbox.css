@@ -312,6 +312,45 @@ border-radius: 10px;
 }
   }
 
+  @media (max-width: 390px){
+    .message-container>h3{
+    
+        font-size: var(--sm-chat);
+     
+    }
+    .listing-info h6{
+        font-size: var(--sm-chat);
+    }
+    .listing-icon img {
+        width: 35px;
+        height:35px;
+        object-fit: cover;
+     
+    }
+    .listing-info p{
+        font-size: var(--sm-chat);
+    }
+    .listing-div-2 p{
+        font-size: var(--sm-chat);
+    }
+    
+    .listing-input-area button{
+       
+     
+        font-size: var(--sm-chat);
+    }
+    
+.listing-input-area{
+
+  
+   
+    grid-template-columns: 75% 25%;
+  
+   
+   
+}
+  }
+
   @media (min-width: 769px){
     .message-container>h3{
     

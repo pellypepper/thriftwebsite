@@ -29,3 +29,9 @@
     color: white;
  }
   
+
+ @media (max-width: 468px){
+   div    select{
+            font-size: var(--sm-xs);
+         }
+ }

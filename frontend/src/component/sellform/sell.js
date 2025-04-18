@@ -33,15 +33,21 @@ const Sell = ({ sellRef }) => {
     }
   };
 
+  const showNotify = (message, type = 'error') => {
+    setNotificationMessage(message);
+    setNotificationType(type);
+    setShowNotification(true);
+  };
+
   // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if(!clerkUser) {
-      alert('You need to Sign In to post a product');
+      showNotify('You need to Sign In to post a product');
       return;
     }
     if (!title || !price || !description || !file || !condition || !location || !category) {
-      alert('Please fill all fields');
+      showNotify('Please fill all fields');
       return;
     }
     const categoryToMainCategory = {
@@ -86,23 +92,26 @@ const Sell = ({ sellRef }) => {
 
     try {
       const response = await dispatch(postListing(formData));
-      
-     
+    
       if (response.payload) {
         setNotificationMessage('Product added successfully!');
         setNotificationType('success');
-      
       } else {
-        setNotificationMessage('Something went wrong!');
+        const message = typeof response.payload === 'object'
+          ? response.payload.error || 'Something went wrong!'
+          : response.payload;
+    
+        setNotificationMessage(message);
         setNotificationType('error');
       }
+    
       setShowNotification(true);
     } catch (error) {
       setNotificationMessage('Error submitting your product!');
       setNotificationType('error');
       setShowNotification(true);
     }
-  };
+  }
 
   return (
     <section className='sellform-container '>
@@ -139,12 +148,14 @@ const Sell = ({ sellRef }) => {
       </form>
 
       {showNotification && (
-        <Notification
-          message={notificationMessage}
-          type={notificationType}
-          onClose={() => setShowNotification(false)} // Close the notification after 5 seconds
-        />
-      )}
+         <div className="notification-wrapper">
+    <Notification
+      message={notificationMessage}
+      type={notificationType}
+      onClose={() => setShowNotification(false)}
+    />
+  </div>
+)}
 
 
     </section>

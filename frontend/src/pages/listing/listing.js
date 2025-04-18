@@ -4,11 +4,13 @@ import Navbar from '../../component/navbar/navbar';
 import { useDispatch , useSelector} from 'react-redux';
 import {getUserItem, updateUserItem, deleteUserItem} from '../../features/listSlice';
 import Notification from '../../component/notification/notify';
+import Footer from '../../component/footer/footer';
+
 
 const Listing = ({userId}) => {
      const dispatch = useDispatch();
     
-     const { items = [], loading = false, error = null } = useSelector((state) => state.list || {}); 
+     const { items = [] } = useSelector((state) => state.list || {}); 
      const [products, setProducts] = useState([]);
      
        const [showNotification, setShowNotification] = useState(false); 
@@ -90,7 +92,7 @@ const Listing = ({userId}) => {
         {products.map((product) => (
           <div 
             key={product.id} 
-            className={`product-card ${product.available ? 'sold' : ''}`}
+            className={`product-card ${!product.available ? 'sold' : ''}`}
           >
             <div className="product-image-container">
               <img 
@@ -98,7 +100,7 @@ const Listing = ({userId}) => {
                 alt={product.title} 
                 className="product-image"
               />
-              {product.available && (
+              {!product.available && (
                 <div className="sold-badge">Sold</div>
               )}
             </div>
@@ -135,6 +137,10 @@ const Listing = ({userId}) => {
         ))}
       </div>
       </section>
+
+      <section>
+        <Footer />
+      </section>
       
       {products.length === 0 && (
         <div className="empty-state">
@@ -142,7 +148,7 @@ const Listing = ({userId}) => {
         </div>
       )}
 
-{showNotification && (
+         {showNotification && (
         <Notification
           message={notificationMessage}
           type={notificationType}

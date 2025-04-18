@@ -96,9 +96,11 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
         <main>
             <header>
      
-                  <div className="logo-wrapper">
-                       
-                  </div>
+            <div className="logo-wrapper">
+<Link to='/'>  <span className="logo-icon">🛍️</span>
+<h1 className="logo-text">Thrift<span>Store</span></h1></Link>
+</div>
+
                 <nav ref={menuRef}>
                 {isLoading && <Spinner />}
                 <ul>
@@ -111,6 +113,18 @@ export default function Navbar({ sellRef, clerkSyncStatus, clerkUser, loading, h
             </li>
             <li className="category-nav" onClick={() => handleCategoryClick('Entertainment')}>
               Entertainment
+            </li>
+            <li className="category-nav" onClick={() => handleCategoryClick('ClothingAccessories')}>
+              Clothing & Accessories
+            </li>
+            <li className="category-nav" onClick={() => handleCategoryClick('Electronics')}>
+          Electronics
+            </li>
+            <li className="category-nav" onClick={() => handleCategoryClick('Family')}>
+              Family
+            </li>
+            <li className="category-nav" onClick={() => handleCategoryClick('Hobbies')}>
+              Hobbies
             </li>
           </ul>
         </li>

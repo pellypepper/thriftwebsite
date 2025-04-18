@@ -31,3 +31,18 @@ footer{
     }
     
 }
+
+@media screen and (max-width: 468px) {
+  
+    
+    .footer-1 h3{
+      font-size: var(--sm-sm)
+     
+    }
+    .footer-1 p{
+        font-size: var(--sm-xs)
+       
+      }
+    
+    
+}
