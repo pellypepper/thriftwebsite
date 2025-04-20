@@ -26,13 +26,13 @@ const acct =  async (req, res) => {
   }
 
 const auth =  async (req, res) => {
-    console.log('Received auth request body:', req.body);
+
     
     const { clerkId, email, firstName, lastName, username } = req.body;
     
     // Validate required fields
     if (!clerkId) {
-      console.error('Missing clerkId in request');
+    
       return res.status(400).json({ error: 'clerkId is required' });
     }
   
@@ -56,7 +56,7 @@ const auth =  async (req, res) => {
       );
       
       res.json(updatedUser.rows[0]);
-      console.log(updatedUser.rows[0]);
+     
     } catch (error) {
       console.error('Auth error:', error);
       res.status(500).json({ error: error.message });

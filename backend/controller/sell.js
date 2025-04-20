@@ -13,7 +13,7 @@ const createProduct = async (req, res) => {
         });
       }
       
-      console.log('Request body after Multer:', req.body);
+
       
       const { title, price, description, condition, location, category, main_category, clerk_id } = req.body;
 
@@ -55,7 +55,7 @@ const createProduct = async (req, res) => {
           item: dbResponse.rows[0],
         });
       } catch (error) {
-        console.error('Error in image processing or database:', error);
+      
         res.status(500).json({
           error: 'Failed to process upload',
           details: process.env.NODE_ENV === 'development' ? error.message : undefined,
