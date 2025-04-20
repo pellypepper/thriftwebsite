@@ -1,13 +1,24 @@
 
- .box-container  .product-listing-container{
-    max-width: 1200px;
+ .product-listing-container{
+width: 100%;
     margin: 0 auto;
-    padding: 2rem;
+
     background-color: var(--white-color);
     min-height: 100vh;
+
+
   }
   
+  .listing-grid-1{
 
+    }
+
+    .listing-grid-2{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    }
+  
   
  .box-container .product-grid {
     display: grid;

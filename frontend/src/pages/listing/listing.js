@@ -83,7 +83,7 @@ const Listing = ({userId}) => {
     
 
 
-      <section>
+      <section  className='listing-grid-1'>
         <Navbar />
       </section>
       
@@ -138,7 +138,7 @@ const Listing = ({userId}) => {
       </div>
       </section>
 
-      <section>
+      <section className='listing-grid-2'>
         <Footer />
       </section>
       

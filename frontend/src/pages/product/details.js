@@ -27,7 +27,7 @@ export default function Details({buyerId}) {
 
   const handleNavigate = () => {
     if (product.clerk_id === buyerId ){
-         showNotify('You need to Sign In to post a product');
+         showNotify('You posted the item. you cant chat with yourself');
     }
     else{
       navigate("/chat", { state: { product } });

@@ -1,5 +1,5 @@
 const pool = require('../../database/db');
-
+const {sendEmail} = require('../utils/email')
 
 
 
@@ -72,6 +72,12 @@ const pool = require('../../database/db');
       const result = await pool.query(messageQuery, [chat_id, sender_id, message_text, message_sender ]);
   
       const message_id = result.rows[0].message_id;
+      
+      const notification = await getNotification(sender_id, chat_id);
+
+      if (notification?.error) {
+        console.warn('Email notification failed:', notification.error);
+      }
       res.json({ message_id });
     } catch (error) {
       console.error('Error sending message:', error);
@@ -121,6 +127,48 @@ const pool = require('../../database/db');
       res.status(500).json({ message: 'Error fetching messages' });
     }
   }
+
+  const getNotification = async (userId, chat_id) => {
+    try {
+      const result = await pool.query(
+        `SELECT buyer_id, seller_id FROM chats WHERE chat_id = $1`,
+        [chat_id]
+      );
+  
+      const chat = result.rows[0];
+      if (!chat) {
+        console.error('Chat not found');
+        return;
+      }
+  
+      // Determine the "other" user (not the one sending the message)
+      const otherUserId = chat.buyer_id !== userId ? chat.buyer_id : chat.seller_id;
+  
+      const emailResult = await pool.query(
+        `SELECT email FROM users WHERE id = $1`,
+        [otherUserId]
+      );
+  
+      const email = emailResult.rows[0]?.email;
+      if (email) {
+        console.log('Sending email to:', email);
+
+        await sendEmail({
+          to: email, 
+          subject: 'New Message',
+          text: 'You have a new message. Please log in to check it.',
+        });
+        console.log('✅ Email sent to', email);
+      } else {
+        console.warn('User email not found');
+      }
+    } catch (error) {
+      console.error('❌ Error sending notification:', error.message);
+      return { error: 'Unable to send notification' };
+    }
+  };
+  
+  
 
 
 module.exports = { createChat, getUser, sendMessage, deleteMessage, getMessage };

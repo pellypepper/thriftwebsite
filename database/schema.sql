@@ -44,6 +44,7 @@ CREATE TABLE messages (
   chat_id INT NOT NULL,               -- ID of the chat to which the message belongs
   sender_id INT NOT NULL,             -- ID of the sender (either buyer or seller)
   message_text TEXT NOT NULL,         -- Content of the message
+  message_sender TEXT NOT NULL,
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp when the message was sent
   FOREIGN KEY (chat_id) REFERENCES chats(chat_id) ON DELETE CASCADE, -- Reference to chat
   FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE -- Reference to sender (user)
