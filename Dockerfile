@@ -19,6 +19,7 @@ RUN npm install
 
 # Copy frontend build to a public directory
 COPY --from=frontend /app/frontend/build ./public
+COPY database ./database
 
 # Set PORT and expose
 ENV PORT=8080
