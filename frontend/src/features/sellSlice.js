@@ -20,6 +20,7 @@ export const postListing = createAsyncThunk('sell/postListing', async (formData,
 export const fetchItems = createAsyncThunk('sell/fetchItems', async ({ category, page = 1, limit = 10 }, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/product/items?category=${category}`);
+    console.log('API Response:', response.data);
     return { category, items: response.data }; 
   } catch (error) {
     return rejectWithValue(error.response.data);
