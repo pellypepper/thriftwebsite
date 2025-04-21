@@ -163,7 +163,7 @@ color: var(--primary-color)
     }
     .product-container h3{
 
-      font-size: var(--sm-md);
+      font-size: var(--sm-xs);
      
       }
       .product-title {
