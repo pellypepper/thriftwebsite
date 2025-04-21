@@ -13,14 +13,13 @@ WORKDIR /app
 
 # Copy backend code
 COPY backend ./backend
+# Copy package.json from root
+COPY package*.json ./
+RUN npm install
 WORKDIR /app/backend
 
 # Copy frontend build to backend/public
 COPY --from=frontend /app/frontend/build ./public
-
-# Install backend deps
-COPY backend/package*.json ./
-RUN npm install
 
 # Set PORT and expose
 ENV PORT=8080
