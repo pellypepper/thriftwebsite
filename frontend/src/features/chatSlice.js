@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const createChat = createAsyncThunk('chat/createChat', async (chatDetails) => {
-  const response = await fetch('http://localhost:8080/chat/create-chat', {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/create-chat`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const sendMessage = createAsyncThunk(
         return rejectWithValue('Missing required message fields');
       }
       console.log(messageData)
-      const response = await fetch('http://localhost:8080/chat/send-message', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/send-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export const sendMessage = createAsyncThunk(
 );
 
 export const getMessages = createAsyncThunk('chat/getMessages', async (chat_id) => {
-  const response = await fetch(`http://localhost:8080/chat/get-messages/${chat_id}`);
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/get-messages/${chat_id}`);
   const data = await response.json();
 
   return data;
@@ -56,7 +56,7 @@ export const deleteMessages = createAsyncThunk(
   'chat/deleteMessages', 
   async (chat_id) => {   
   
-    const response = await fetch(`http://localhost:8080/chat/delete-message/${chat_id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/delete-message/${chat_id}`, {
       method: 'DELETE',
     });
     const data = await response.json();
@@ -66,7 +66,7 @@ export const deleteMessages = createAsyncThunk(
 );
 
 export const getUsers = createAsyncThunk('chat/getUsers', async (userDetails) => {
-  const response = await fetch(`http://localhost:8080/chat/getUser/${userDetails}`);
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/getUser/${userDetails}`);
 
   return response.json();
 });

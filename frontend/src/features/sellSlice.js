@@ -19,7 +19,7 @@ export const postListing = createAsyncThunk('sell/postListing', async (formData,
 // Async thunk for fetching items based on category
 export const fetchItems = createAsyncThunk('sell/fetchItems', async ({ category, page = 1, limit = 10 }, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/product/items?category=${category}`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/product/items?category=${category}`);
     return { category, items: response.data }; 
   } catch (error) {
     return rejectWithValue(error.response.data);

@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
 export const getChatId = createAsyncThunk('inbox/getChatId', async (userId) => {
-    const response = await fetch(`http://localhost:8080/inbox/getChatId/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/inbox/getChatId/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export const getChatId = createAsyncThunk('inbox/getChatId', async (userId) => {
   });
 
   export const getCombineInfo = createAsyncThunk('inbox/getInfo', async (chatIds) => {
-    const response = await fetch(`http://localhost:8080/inbox/getInfo`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/inbox/getInfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

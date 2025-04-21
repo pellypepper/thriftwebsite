@@ -23,7 +23,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
 
 
 
-    const response = await fetch('http://localhost:8080/user/auth', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/user/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   'auth/fetchUserData',
   async (token) => {
-    const response = await fetch('http://localhost:8080/user/acct', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/user/acct`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
