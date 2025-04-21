@@ -200,15 +200,23 @@ export default function ChatPage({ buyerId }) {
                 </div>
               ) : (
                 <div className="messages-list">
-                  {chatMessages.map((msg, index) => (
-                    <div 
-                      key={index} 
-                      className={`message-bubble ${msg.sender_id === userId ? 'sent' : 'received'}`}
-                    >
-                          <p key={msg.message_id}>{msg.message_sender}: {msg.message_text}</p>
-                          <p >{msg.timestamp}</p>
-                    </div>
-                  ))}
+                {chatMessages.map((msg, index) => {
+          const formattedTime = new Date(msg.timestamp).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          return (
+            <div 
+              key={index} 
+              className={`message-bubble ${msg.sender_id === userId ? 'sent' : 'received'}`}
+            >
+              <p className="message-text">
+                <strong>{msg.message_sender}:</strong> {msg.message_text}
+              </p>
+              <p className="timestamp">{formattedTime}</p>
+            </div>
+          );
+        })}
                   <div ref={messagesEndRef} />
                 </div>
               )}

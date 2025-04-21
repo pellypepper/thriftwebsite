@@ -11,8 +11,6 @@ const footer = () => {
           <p>Contact Us</p>
           <p>Privacy Policy</p>
           <p>Terms of Service</p>
-          <p>SignIn</p>
-          <p>SignUp</p>
           <p>Help</p>
           <p>FAQ</p>
         </div>
@@ -32,6 +30,8 @@ const footer = () => {
         </div>
         <div className="footer-1 footer-2">
           <h3>Account</h3>
+          <p>SignIn</p>
+          <p>SignUp</p>
         </div>
       </div>
       <div>

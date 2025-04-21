@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async ({ to, subject, text }) => {
   if (!to) {
-    console.error("❌ Email recipient is missing.");
+   
     return "No email recipient provided.";
   }
 
@@ -26,10 +26,10 @@ const sendEmail = async ({ to, subject, text }) => {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent to ${to} (Message ID: ${info.messageId})`);
+ 
     return true;
   } catch (error) {
-    console.error(`❌ Error sending email to ${to}:`, error.message);
+ 
     return `Error sending email: ${error.message}`;
   }
 };

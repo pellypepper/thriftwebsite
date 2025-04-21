@@ -3,7 +3,7 @@ const pool = require('../../database/db');
 
 
 const acct =  async (req, res) => {
-    console.log(req.body)
+ 
     try {
       const result = await pool.query(
         'SELECT * FROM users WHERE clerk_id = $1',
@@ -58,7 +58,7 @@ const auth =  async (req, res) => {
       res.json(updatedUser.rows[0]);
      
     } catch (error) {
-      console.error('Auth error:', error);
+  
       res.status(500).json({ error: error.message });
     }
   }

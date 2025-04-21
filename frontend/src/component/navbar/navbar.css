@@ -51,14 +51,20 @@ li{
 
 nav{
     display: flex;
-    justify-content: space-between;
+  
 
-    align-items: center;
-    padding: 10px;
+ align-items: center;
+
 }
 .acct-wrapper{
 
-    height: 100%;
+
+}
+nav ul{
+  display: flex;
+  align-items: center;
+
+
 
 }
 nav ul li{
@@ -66,11 +72,12 @@ nav ul li{
     margin-right: 1rem;
     cursor: pointer;
     font-size: var(--sm-xs);
+
 }
 .acct-wrapper .btn{
     background-color:var(--white-color);
     color: black;
-    font-size: var(--md-xs);
+    font-size: var(--sm-xs);
 }
 
 
@@ -154,12 +161,7 @@ ul li a{
     color: var(--white-color);
     text-decoration: none;
 }
-.signin-btn .btn{
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-}
+
 
 .open{
     display: flex;
@@ -363,11 +365,15 @@ width: 100%;
 @media (min-width: 769px){
     nav ul li{
  
-        font-size: var(--sm-xs);
+        font-size: var(--sm-chat);
+    }
+
+    nav ul{
+      margin-top: 1rem;
     }
     .acct-wrapper .btn{
     
-        font-size: var(--lg-xs);
+        
     }
     .search-wrapper{
       overflow: hidden;
@@ -392,14 +398,28 @@ width: 100%;
       
   }
 
+  @media (min-width: 850px){
+    nav ul li{
+ 
+        font-size: var(--sm-xs);
+    }
+
+   
+  
+  
+      
+      
+  }
+
   @media (min-width: 1024px){
     nav ul li{
  
-        font-size: var(--lg-sm);
+        font-size: var(--lg-xs);
+     
     }
     .acct-wrapper .btn{
     
-        font-size: var(--lg-sm);
+        font-size: var(--lg-xs);
     }
     .logo-icon {
       font-size: 1.5rem; 

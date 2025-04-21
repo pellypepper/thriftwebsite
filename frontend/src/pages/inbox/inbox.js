@@ -184,13 +184,31 @@ export default function Inbox({ userId }) {
                                     {message.length > 0 ? (
                                        <div className="message-split">
                                            <div className="listing-div-2">
-                                            {message.map((msg) => (
-                                                <div   className={`message-bubble ${msg.sender_id === user ? 'sent' : 'received'}`}   key={msg.message_id}>
-                                                    <p key={msg.message_id}>{msg.message_sender}: {msg.message_text}</p>
-                                                    <p >{msg.timestamp}</p>
-                                                </div>
-                                            
-                                            ))}
+                                           {message.length > 0 ? (
+  <div className="message-split">
+    <div className="listing-div-2">
+      {message.map((msg) => {
+        const formattedTime = new Date(msg.timestamp).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        return (
+          <div
+            className={`message-bubble ${msg.sender_id === user ? 'sent' : 'received'}`}
+            key={msg.message_id}
+          >
+            <p className="message-text">
+              <strong>{msg.message_sender}:</strong> {msg.message_text}
+            </p>
+            <p className="timestamp">{formattedTime}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+) : null}
+
                                   
                                         </div>
                                                     <div className="listing-input-area">

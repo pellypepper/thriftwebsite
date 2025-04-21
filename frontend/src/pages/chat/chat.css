@@ -20,13 +20,19 @@
   padding: 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .chat-page  .product-info {
   display: flex;
   align-items: center;
-}
 
+}
+.product-images , .product-details{
+
+   display: flex;
+
+align-items: center;  }
 .chat-page  .product-info img {
   width: 60px;
   height: 60px;
@@ -39,7 +45,7 @@
   font-size: 18px;
 }
 
-.product-price {
+.product-details p {
   color: var(--white-color);
   font-weight: bold;
 }
@@ -191,4 +197,35 @@
   color: #e74c3c;
   font-size: 14px;
   text-align: center;
+}
+
+
+@media (max-width: 468px){
+  .product-details h3 {
+    font-size: var(--sm-xs);
+  }
+  
+
+  
+  .chat-header h2 {
+  
+    font-size: var(--sm-sm);
+
+  }
+  
+}
+
+@media (max-width: 390px){
+  .product-details h3 {
+    font-size: var(--sm-chat);
+  }
+  
+
+  
+  .chat-header h2 {
+  
+    font-size: var(--sm-xs);
+
+  }
+  
 }

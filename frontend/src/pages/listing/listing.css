@@ -2,30 +2,22 @@
  .product-listing-container{
 width: 100%;
     margin: 0 auto;
-
+   
     background-color: var(--white-color);
     min-height: 100vh;
 
 
   }
-  
-  .listing-grid-1{
 
-    }
 
-    .listing-grid-2{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    }
-  
-  
+
+
  .box-container .product-grid {
     display: grid;
     padding: 20px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
-  
+
   }
   
   .box-container .product-card {
@@ -147,6 +139,7 @@ width: 100%;
     padding: 3rem;
     color: var(--text-secondary);
     font-size: 1.5rem;
+    height: 400px;
   }
   
   /* Responsive Adjustments */

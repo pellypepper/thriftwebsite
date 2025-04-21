@@ -136,17 +136,19 @@ const Listing = ({userId}) => {
           </div>
         ))}
       </div>
-      </section>
-
-      <section className='listing-grid-2'>
-        <Footer />
-      </section>
-      
       {products.length === 0 && (
         <div className="empty-state">
           <p>No products listed yet</p>
         </div>
       )}
+      
+      <section className='listing-grid-2'>
+        <Footer />
+      </section>
+      </section>
+
+      
+  
 
          {showNotification && (
         <Notification
