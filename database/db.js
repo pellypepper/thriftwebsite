@@ -10,7 +10,7 @@ const pool = new Pool({
 
 if (process.env.NODE_ENV !== 'test') {
   pool.connect()
-    .then(() => console.log('Connected to PostgreSQL (Supabase)'))
+    .then(() => console.log('Connected to PostgreSQL (Supabased)'))
     .catch((err) => console.error('Error connecting to PostgreSQL:', err));
 }
 
