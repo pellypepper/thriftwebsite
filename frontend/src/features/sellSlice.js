@@ -4,7 +4,7 @@ import axios from 'axios';
 // Async thunk for posting a new listing
 export const postListing = createAsyncThunk('sell/postListing', async (formData, { rejectWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/sell/form', formData, {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/sell/form`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
