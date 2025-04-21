@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
 
 export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/listing/getUserItem/${userId}`, {
+    const response = await fetch(`${baseURL}/listing/getUserItem/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -15,7 +16,7 @@ export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId
   });
 
   export const updateUserItem = createAsyncThunk('listing/updateUserItem', async (updatedItem) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/listing/getUserItem`, {
+    const response = await fetch(`${baseURL}/listing/getUserItem`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId
 
 
   export const deleteUserItem = createAsyncThunk('listing/deleteUserItem', async ({userId, id}) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/listing/deleteUserItem/${userId}/${id}`, {
+    const response = await fetch(`${baseURL}/listing/deleteUserItem/${userId}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

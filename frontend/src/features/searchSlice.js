@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
 // Async action to fetch search results from backend
 export const fetchSearchResults = createAsyncThunk(
     "search/fetchSearchResults",
     async (query, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/product/search?query=${query}`);
+            const response = await fetch(`${baseURL}/api/product/search?query=${query}`);
             const data = await response.json();
    
             return data;

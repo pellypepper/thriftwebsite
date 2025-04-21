@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
 
 export const sendClerkDataToBackend = createAsyncThunk(
   'auth/sendClerkData',
@@ -23,7 +24,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
 
 
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/user/auth`, {
+    const response = await fetch(`${baseURL}/user/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export const sendClerkDataToBackend = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   'auth/fetchUserData',
   async (token) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/user/acct`, {
+    const response = await fetch(`${baseURL}/user/acct`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
