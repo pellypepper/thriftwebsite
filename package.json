@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
-    "test:backend": "jest --testPathPattern='backend/'"
+    "test:backend": "jest --testPathPattern='backend/'",
+     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^5.1.6",
