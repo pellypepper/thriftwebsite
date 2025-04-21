@@ -1,5 +1,5 @@
 
-const pool = require('../db');
+const pool = require('../../database/db');
 
 // fecth user info based on chatId
 const getInfo =  async (req, res) => {

@@ -1,4 +1,5 @@
-const pool = require('../db');
+const pool = require('../../database/db');
+const path = require('path');
 console.log(path.resolve(__dirname, '../db'));
 
 
