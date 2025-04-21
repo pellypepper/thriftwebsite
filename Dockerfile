@@ -16,7 +16,7 @@ COPY backend ./backend
 WORKDIR /app/backend
 
 # Copy frontend build to backend/public
-COPY --from=frontend /app/frontend/dist ./public
+COPY --from=frontend /app/frontend/build ./public
 
 # Install backend deps
 COPY backend/package*.json ./
