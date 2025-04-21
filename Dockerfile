@@ -11,18 +11,18 @@ FROM node:18
 
 WORKDIR /app
 
-# Copy backend code
+# Copy backend code and root package.json
 COPY backend ./backend
-# Copy package.json from root
 COPY package*.json ./
+COPY server.js ./
 RUN npm install
-WORKDIR /app/backend
 
-# Copy frontend build to backend/public
+# Copy frontend build to a public directory
 COPY --from=frontend /app/frontend/build ./public
 
 # Set PORT and expose
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["node", "server.js"]
+# For debugging - list directory contents
+CMD ["sh", "-c", "ls -la && echo 'Current directory:' && pwd && node server.js"]
