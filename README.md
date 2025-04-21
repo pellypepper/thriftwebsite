@@ -1,64 +1,58 @@
-🛍️ ThriftWorld – Global Marketplace for Second-Hand & New Products
+# 🛍️ ThriftWorld – Global Marketplace for Second-Hand & New Products
+
 ThriftWorld is a real-time marketplace web application designed to let users from anywhere in the world post both used and new products, connect with potential buyers, and chat directly — no middleman, no online payment. Whether you're decluttering your closet or hunting for a deal, ThriftWorld helps make the exchange smooth, social, and secure.
 
-🚀 Features
-🔐 User Authentication via Clerk (OAuth & JWT)
+---
 
-📩 Real-Time Messaging using Socket.IO
+## 🚀 Features
 
-📬 Email Notifications (via Nodemailer) when users receive new messages
+- **🔐 User Authentication** via Clerk (OAuth & JWT)
+- **📩 Real-Time Messaging** using Socket.IO
+- **📬 Email Notifications** (via Nodemailer) when users receive new messages
+- **🧵 Product Listings** with image, description, and price
+- **🔍 Search Functionality** to find any product
+- **🏷️ Users can mark listings** as Available or Sold
+- **🗃️ My Listings page** for sellers to manage their items
+- **🚫 Report Item feature** to flag inappropriate or fraudulent listings
+- **💬 Buyer-Seller Chat** to agree on pickup/delivery — no online payment
+- **📱 Responsive UI** using Bootstrap 5
 
-🧵 Product Listings with image, description, and price
+---
 
-🔍 Search Functionality to find any product
+## 🧰 Tech Stack
 
-🏷️ Users can mark listings as Available or Sold
+### 🔧 Backend
+- **Node.js** & **Express.js** – API server & route handling
+- **Socket.IO** – Real-time messaging layer
+- **Supabase PostgreSQL** – Cloud-based relational DB
+- **Nodemailer** – Email notifications
+- **Clerk** – Authentication (OAuth, session, user profiles)
+- **Axios** – API communication
 
-🗃️ My Listings page for sellers to manage their items
+### 🎨 Frontend
+- **React** (Vite)
+- **Redux** – Global state management
+- **Bootstrap 5** – Responsive, mobile-first UI
+- **Socket.IO Client** – WebSocket messaging
+- **Axios** – Data fetching
 
-🚫 Report Item feature to flag inappropriate or fraudulent listings
+---
 
-💬 Buyer-Seller Chat to agree on pickup/delivery — no online payment
+## 🌐 Live Demo
 
-📱 Responsive UI using Bootstrap 5
+- 🟢 **Hosted on Fly.io**
+- 🔗 [**Live App Link**](#) (replace with actual link)
 
-🧰 Tech Stack
-🔧 Backend
-Node.js & Express.js – API server & route handling
+---
 
-Socket.IO – Real-time messaging layer
+## 📦 Installation Guide
 
-Supabase PostgreSQL – Cloud-based relational DB
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/thriftworld.git
+   cd thriftworld
+Install Dependencies
 
-Nodemailer – Email notifications
-
-Clerk – Authentication (OAuth, session, user profiles)
-
-Axios – API communication
-
-🎨 Frontend
-React (Vite)
-
-Redux – Global state management
-
-Bootstrap 5 – Responsive, mobile-first UI
-
-Socket.IO Client – WebSocket messaging
-
-Axios – Data fetching
-
-🌐 Live Demo
-🟢 Hosted on Fly.io
-🔗 Live App Link 
-
-📦 Installation Guide
-1. Clone the Repository
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/thriftworld.git
-cd thriftworld
-2. Install Dependencies
 Backend
 bash
 Copy
@@ -71,8 +65,10 @@ Copy
 Edit
 cd frontend
 npm install
-3. Configure Environment Variables
+Configure Environment Variables
+
 🗂️ Backend .env file
+
 env
 Copy
 Edit
@@ -85,7 +81,8 @@ CLERK_SECRET_KEY=your_clerk_backend_key
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password_or_app_password
 FRONTEND_URL=http://localhost:3000
-4. Run the App Locally
+Run the App Locally
+
 Start Backend
 bash
 Copy
