@@ -1,4 +1,4 @@
-const pool = require('../database/db');
+const pool = require('../db');
 const {sendEmail} = require('../utils/email')
 
 
