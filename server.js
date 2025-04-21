@@ -13,9 +13,11 @@ const chatRouter = require('./backend/routes/chat');
 const inboxRouter = require('./backend/routes/inbox');
 const listRouter =  require('./backend/routes/listing');
 const pool = require('./database/db');
+const HOST = '0.0.0.0';
+
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 
 // Initialize Express and Socket.io
@@ -67,6 +69,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`Server running on port ${PORT}`);
 });

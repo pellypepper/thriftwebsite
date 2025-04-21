@@ -4,7 +4,7 @@ import axios from 'axios';
 // Async thunk for posting a new listing
 export const postListing = createAsyncThunk('sell/postListing', async (formData, { rejectWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:5000/api/sell/form', formData, {
+    const response = await axios.post('http://localhost:8080/api/sell/form', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -19,7 +19,7 @@ export const postListing = createAsyncThunk('sell/postListing', async (formData,
 // Async thunk for fetching items based on category
 export const fetchItems = createAsyncThunk('sell/fetchItems', async ({ category, page = 1, limit = 10 }, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/product/items?category=${category}`);
+    const response = await axios.get(`http://localhost:8080/api/product/items?category=${category}`);
     return { category, items: response.data }; 
   } catch (error) {
     return rejectWithValue(error.response.data);

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 
 export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId) => {
-    const response = await fetch(`http://localhost:5000/listing/getUserItem/${userId}`, {
+    const response = await fetch(`http://localhost:8080/listing/getUserItem/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId
   });
 
   export const updateUserItem = createAsyncThunk('listing/updateUserItem', async (updatedItem) => {
-    const response = await fetch(`http://localhost:5000/listing/getUserItem`, {
+    const response = await fetch(`http://localhost:8080/listing/getUserItem`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export const getUserItem = createAsyncThunk('listing/getUserItem', async (userId
 
 
   export const deleteUserItem = createAsyncThunk('listing/deleteUserItem', async ({userId, id}) => {
-    const response = await fetch(`http://localhost:5000/listing/deleteUserItem/${userId}/${id}`, {
+    const response = await fetch(`http://localhost:8080/listing/deleteUserItem/${userId}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

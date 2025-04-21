@@ -5,7 +5,7 @@ export const fetchSearchResults = createAsyncThunk(
     "search/fetchSearchResults",
     async (query, { rejectWithValue }) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/product/search?query=${query}`);
+            const response = await fetch(`http://localhost:8080/api/product/search?query=${query}`);
             const data = await response.json();
    
             return data;
