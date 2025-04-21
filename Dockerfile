@@ -21,6 +21,11 @@ RUN npm install
 COPY --from=frontend /app/frontend/build ./public
 COPY database ./database
 
+# Dockerfile
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+
 # Set PORT and expose
 ENV PORT=8080
 EXPOSE 8080
