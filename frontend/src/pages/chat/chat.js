@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from '../../component/navbar/navbar';
 import { createChat, sendMessage, getMessages, getUsers } from '../../features/chatSlice';
 
-const socket = io('http://localhost:5000');
+const socket = io(process.env.REACT_APP_API_URL);
 
 export default function ChatPage({ buyerId }) {
   const location = useLocation();
