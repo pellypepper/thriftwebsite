@@ -1,4 +1,4 @@
-const pool = require('../../database/db');
+const pool = require('../../../database/db');
 
 
 const getUserItem =  async (req, res) => {
