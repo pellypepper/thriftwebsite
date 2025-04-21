@@ -1,6 +1,6 @@
-const pool = require('../../../database/db')
+const pool = require('../../database/db')
 const path = require('path');
-console.log(path.resolve(__dirname, '../../../database/db'));
+console.log(path.resolve(__dirname, '../../database/db'));
 
 
 const acct =  async (req, res) => {

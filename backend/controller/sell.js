@@ -1,5 +1,5 @@
 const { uploadToCloudinary, processImage } = require('../utils/imageUtils');
-const pool = require('../../../database/db');
+const pool = require('../../database/db');
 const upload = require('../middleware/uploadMiddleware');
 
 const createProduct = async (req, res) => {
