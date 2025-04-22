@@ -41,7 +41,7 @@ ThriftWorld is a real-time marketplace web application designed to let users fro
 ## 🌐 Live Demo
 
 - 🟢 **Hosted on Fly.io**
-- 🔗 [**Live App Link**](#) (replace with actual link)
+- 🔗 [**https://thriftwebsite.fly.dev/**]
 
 ---
 
