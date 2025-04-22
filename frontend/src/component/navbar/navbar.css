@@ -101,20 +101,21 @@ gap: 10px;
 }
 
 .search-wrapper{
-    overflow: hidden;
-    border: 2px solid var(--white-color);
+
     width: 250px;
     height: 50px;
-    border-radius: 5px
+  
 }
 
 .search-wrapper input{
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
     border: none;
     outline: none;
     height: 100%;
     width: 80%;
     padding: 10px;
- 
+    margin-top: .1rem;
     color:  var(--dark-color);
 }
 
@@ -122,6 +123,8 @@ gap: 10px;
 font-size:  var(--sm-xs);
 }
 .search-wrapper button{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     border: none;
     height: 100%;
     width: 20%;
@@ -180,8 +183,7 @@ ul.dropdown {
   list-style: none;
   padding: 0;
   margin-top: 0.5rem;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
   border-bottom: 0;
 }
 
@@ -211,10 +213,7 @@ ul.dropdown li:hover {
     header{
         position: relative;
     }
-    ul.dropdown {
-        
-       
-      }
+  
       
       nav {
         background-color:var(--white-color);
@@ -239,25 +238,29 @@ z-index: 999;
         flex-direction: column;
         width: 100%;
       }
+      #dropdown{
+        position: relative;
+        border: none;
+       
+      }
       ul.dropdown {
         display: none; /* Initially hidden */
-position: absolute;
-left: 0;
-right: 0;
+
 width: 100%;
 
         background-color:var(--white-color);
         list-style: none;
         padding: 10px;
         margin-top: 5px;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+       
       }
       nav ul li a{
         color:  var(--dark-color);
       }
       nav ul li{
        padding: 10px;
+       width: 100%;
         margin-top: 1rem;
         border-top:  2px solid rgba(0, 0, 0, 0.219);
 
@@ -363,6 +366,11 @@ width: 100%;
 
    
 @media (min-width: 769px){
+
+  ul.dropdown{
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
     nav ul li{
  
         font-size: var(--sm-chat);
@@ -377,7 +385,7 @@ width: 100%;
     }
     .search-wrapper{
       overflow: hidden;
-      border: 2px solid var(--white-color);
+    
       width: 150px;
       height: 40px;
   

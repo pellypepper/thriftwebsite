@@ -73,15 +73,12 @@ width: 100%;
     margin-bottom: 0.5rem;
   }
   
-  .box-container .product-description{
-    font-size: var(--md-xs);
-    margin-bottom: 1rem;
-  }
-  
+ 
 .box-container   .product-footer{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: .5rem;
   }
   
  .box-container  .product-pricing{

@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.REACT_APP_API_URL, // Allow frontend to connect
+    origin: [process.env.REACT_APP_API_URL, "http://localhost:3000"], // Allow frontend to connect
     methods: ['GET', 'POST'], // Allow GET and POST methods
     credentials: true, // Allow credentials (cookies, etc.)
   },
@@ -33,7 +33,7 @@ const io = socketIo(server, {
 
 
 const corsOptions = {
-  origin: process.env.REACT_APP_API_URL, 
+  origin:  [process.env.REACT_APP_API_URL, "http://localhost:3000"], 
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
   credentials: true,
 };

@@ -83,9 +83,7 @@ const Listing = ({userId}) => {
     
 
 
-      <section  className='listing-grid-1'>
-        <Navbar />
-      </section>
+  
       
       <section className='box-container'>
       <div className="product-grid">
@@ -107,7 +105,7 @@ const Listing = ({userId}) => {
             
             <div className="product-details">
               <h4 className="product-title">{product.title}</h4>
-              <p className="product-description">{product.description}</p>
+        
               
               <div className="product-footer">
                 <div className="product-pricing">

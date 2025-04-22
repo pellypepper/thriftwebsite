@@ -48,9 +48,7 @@ export default function Details({buyerId}) {
 
   return (
     <main className="details-main">
-      <section>
-        <Navbar />
-      </section>
+
       <section className="details-container">
         <div className="details-top-wrapper">
           <div className="top-left">

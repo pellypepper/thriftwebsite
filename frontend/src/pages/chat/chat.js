@@ -169,9 +169,7 @@ export default function ChatPage({ buyerId }) {
 
   return (
     <main>
-      <section>
-        <Navbar />
-      </section>
+   
 
       <section className="chat-section">
         <div className="chat-page">

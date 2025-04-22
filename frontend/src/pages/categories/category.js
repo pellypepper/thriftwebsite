@@ -10,9 +10,7 @@ const Category = () => {
 
   return (
     <main>
-      <section>
-        <Navbar />
-      </section>
+
       <section>
         <ProductList category={category} title={category} />
       </section>
