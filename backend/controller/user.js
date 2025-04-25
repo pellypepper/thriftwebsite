@@ -81,4 +81,4 @@ const auth =  async (req, res) => {
   //   }
   // };
   
-module.exports = { acct, auth, getUserById };
+module.exports = { acct, auth };
