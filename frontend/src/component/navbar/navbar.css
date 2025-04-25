@@ -113,7 +113,7 @@ gap: 10px;
     border: none;
     outline: none;
     height: 100%;
-    width: 80%;
+    width: 100%;
     padding: 10px;
     margin-top: .1rem;
     color:  var(--dark-color);
@@ -122,15 +122,7 @@ gap: 10px;
 .search-wrapper input::placeholder{
 font-size:  var(--sm-xs);
 }
-.search-wrapper button{
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: none;
-    height: 100%;
-    width: 20%;
-    cursor: pointer;
-    background-color: var(--primary-color);
-}
+
 .search-results {
     display: block ;
     line-height: 1.8rem;

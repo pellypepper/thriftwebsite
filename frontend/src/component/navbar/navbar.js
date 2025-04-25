@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faBars } from "@fortawesome/free-solid-svg-icons";
+import {  faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -198,9 +198,7 @@ export default function Navbar({
               onChange={handleSearchChange}
               onFocus={() => setShowResults(true)} // 🔹 Show results when clicking inside
             />
-            <button aria-label="Search">
-              <FontAwesomeIcon className="search-icon" icon={faArrowRight} />
-            </button>
+          
 
             {/* 🔹 Conditionally render search results */}
             {showResults && results.length > 0 && (

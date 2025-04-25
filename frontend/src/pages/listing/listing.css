@@ -162,6 +162,9 @@ align-items: flex-start;
     z-index: 10;
 
   }
+  .edit{
+    background-color: var(--primary-color);
+  }
   /* Responsive Adjustments */
   @media (max-width: 768px) {
     .product-grid {

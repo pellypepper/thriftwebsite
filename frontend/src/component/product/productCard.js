@@ -53,8 +53,11 @@ const ProductCard = ({ products }) => {
           <div className="product-info">
             <h4 className="product-title">{product.title}</h4>
             <p className="product-description">{product.description}</p>
-            <p>Category: {product.category} </p>
-          <span className='product-price'>£{product.price}</span>
+            <span className='product-price'>£{product.price}</span>
+            <span className="product-date">
+                      Listed on{" "}
+                      {new Date(product.created_at).toLocaleDateString()}
+            </span>
           </div>
         </div>
       ))}
