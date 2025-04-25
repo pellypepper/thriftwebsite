@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
 
 
 // Async thunk for posting a new listing
