@@ -84,7 +84,7 @@ export default function Details({buyerId}) {
 
           <div className="details-info-wrapper">
             <div className="seller-info">
-              <p>{product.clerk_id} <span>private</span></p>
+              <p>{product.username} <span>private</span></p>
               <span><strong>Contact Seller</strong></span>
             </div>
             <p className="border-bottom"></p>

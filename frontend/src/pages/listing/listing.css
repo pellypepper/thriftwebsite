@@ -164,6 +164,7 @@ align-items: flex-start;
   }
   .edit{
     background-color: var(--primary-color);
+    color: white;
   }
   /* Responsive Adjustments */
   @media (max-width: 768px) {
