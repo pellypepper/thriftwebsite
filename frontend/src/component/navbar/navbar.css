@@ -108,8 +108,7 @@ gap: 10px;
 }
 
 .search-wrapper input{
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+border-radius: 5px;
     border: none;
     outline: none;
     height: 100%;
@@ -282,7 +281,7 @@ width: 100%;
  }
 .search-wrapper{
   position: absolute;
-  right: 50px;
+  right: 45px;
   width: 150px;
   height: 40px;
 }
@@ -297,7 +296,7 @@ width: 100%;
 }
 .user-search .userbutton{
     position: absolute;
-    left: 50%;
+    left: 52%;
 }
 
 }

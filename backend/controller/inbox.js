@@ -1,97 +1,121 @@
-
 const pool = require('../../database/db');
 
-// fecth user info based on chatId
-const getInfo =  async (req, res) => {
+// fetch user info based on chatId
+const getInfo = async (req, res) => {
     const { chatIds } = req.body;
-
     if (!chatIds || chatIds.length === 0) {
         return res.status(400).json({ message: 'No chatIds provided' });
     }
-
     try {
-
-        // Placeholders for chatIds SQL query
-        const chatPlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
-
         // Fetch chat details
         const chatQuery = `
             SELECT chat_id, item_id, seller_id, buyer_id
             FROM chats
-            WHERE chat_id IN (${chatPlaceholders})
+            WHERE chat_id = ANY($1::int[])
         `;
-        const result = await pool.query(chatQuery, chatIds);
-
-        if (result.rows.length === 0) {
+        const chatResult = await pool.query(chatQuery, [chatIds]);
+        if (chatResult.rows.length === 0) {
             return res.json({ message: 'No chats found for the provided chatIds' });
         }
-
-        // Extract item_ids from the result
-        const itemIds = result.rows.map(row => row.item_id);
-
-        // Generate item query placeholders
-        const itemPlaceholders = itemIds.map((_, index) => `$${index + 1}`).join(', ');
+        
+        const itemIds = chatResult.rows.map(row => row.item_id);
+        const sellerIds = chatResult.rows.map(row => row.seller_id);
+        
+        // Fetch item details
         const itemQuery = `
-            SELECT id, title, image_url
-            FROM items
-            WHERE id IN (${itemPlaceholders})
+            SELECT i.id, i.title, i.image_url
+            FROM items i
+            WHERE i.id = ANY($1::int[])
         `;
-        const itemResult = await pool.query(itemQuery, itemIds);
-
-        // Generate message query placeholders for chatIds (use different placeholder set)
-        const messagePlaceholders = chatIds.map((_, index) => `$${index + 1}`).join(', ');
-
-        // Query to get the latest message per chat_id, ordered by timestamp
+        const itemResult = await pool.query(itemQuery, [itemIds]);
+        
+        // Fetch seller details - separate query to get clerk_id from users table
+        const sellerQuery = `
+            SELECT id, clerk_id
+            FROM users
+            WHERE id = ANY($1::int[])
+        `;
+        const sellerResult = await pool.query(sellerQuery, [sellerIds]);
+        
+        // Fetch latest messages
         const messageQuery = `
-            SELECT chat_id, message_text, timestamp
+            SELECT DISTINCT ON (chat_id) chat_id, message_text, timestamp
             FROM messages
-            WHERE chat_id IN (${messagePlaceholders})
-            ORDER BY timestamp DESC
+            WHERE chat_id = ANY($1::int[])
+            ORDER BY chat_id, timestamp DESC
         `;
-        const messageResult = await pool.query(messageQuery, chatIds);
+        const messageResult = await pool.query(messageQuery, [chatIds]);
+        
+        // Debug what we got from database
+        console.log("Item results:", itemResult.rows);
+        console.log("Seller results:", sellerResult.rows);
+        
+        console.log("Seller query results:", sellerResult.rows);
 
-        if (itemResult.rows.length === 0) {
-            console.error('No items found for the provided itemIds:', itemIds);
-        }
-        if (messageResult.rows.length === 0) {
-            console.error('No messages found for the provided chatIds:', chatIds);
-        }
+// Check if each seller has a clerk_id
 
-        // Combine the results (chat info, items, and messages)
+        // Combine data
         const combinedResult = chatIds.map(chatId => {
-            const chatInfo = result.rows.find(row => row.chat_id === chatId);
-            const itemInfo = itemResult.rows.find(row => row.id === chatInfo.item_id);
+            const chatInfo = chatResult.rows.find(row => row.chat_id === chatId);
+            if (!chatInfo) {
+                console.error(`No chat info found for chatId: ${chatId}`);
+                return {
+                    chatId,
+                    message: `No chat info available for chatId: ${chatId}`,
+                };
+            }
             
-            // Get the latest message (first message in ordered list)
+            const itemInfo = itemResult.rows.find(row => row.id === chatInfo.item_id);
+            if (!itemInfo) {
+                console.error(`No item info found for itemId: ${chatInfo.item_id}`);
+            }
+            
+            // Get seller info for clerk_id
+            const sellerInfo = sellerResult.rows.find(row => row.id === chatInfo.seller_id);
+            if (!sellerInfo) {
+                console.error(`No seller info found for sellerId: ${chatInfo.seller_id}`);
+            }
+            
             const messageInfo = messageResult.rows.find(row => row.chat_id === chatId);
-
-            return {
-                chatId: chatId,
+            const missingClerkIds = sellerResult.rows.filter(row => !row.clerk_id);
+console.log("Sellers missing clerk_id:", missingClerkIds);
+            
+            // Create the response object with clerk_id
+            const responseObj = {
+                chatId,
                 sellerId: chatInfo.seller_id,
                 buyerId: chatInfo.buyer_id,
                 message_text: messageInfo ? messageInfo.message_text : null,
-                timestamp: messageInfo ? messageInfo.timestamp : null,  // Include timestamp of the latest message
+                timestamp: messageInfo ? messageInfo.timestamp : null,
                 title: itemInfo ? itemInfo.title : null,
-                image_url: itemInfo ? itemInfo.image_url : null
+                image_url: itemInfo ? itemInfo.image_url : null,
+                clerk_id: sellerInfo ? sellerInfo.clerk_id : null,
             };
+            
+            // Debug the constructed response object
+            console.log(`Response for chatId ${chatId}:`, responseObj);
+            
+            return responseObj;
         });
-
-        // Sort the combined result by timestamp in descending order to ensure the most recent message is first
+        
+        // Sort by timestamp in descending order
         const sortedCombinedResult = combinedResult.sort((a, b) => {
+            if (!a.timestamp) return 1;
+            if (!b.timestamp) return -1;
             const timestampA = new Date(a.timestamp);
             const timestampB = new Date(b.timestamp);
-
-            return timestampB - timestampA;  // Sorting by timestamp descending (latest first)
+            return timestampB - timestampA;
         });
-
-        // Return the sorted combined result (chat info, items, and messages)
+        
+        // Debug final response
+        console.log("Final response:", sortedCombinedResult);
+        
         return res.json(sortedCombinedResult);
     } catch (error) {
         console.error('Error fetching chat info:', error);
         res.status(500).json({ message: 'Error fetching chat info' });
     }
-}
-
+};
 
 // Fetch chatId based on userId
 const getChatId = async (req, res) => {

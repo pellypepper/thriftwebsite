@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ products }) => {
      const Navigate = useNavigate();
-
+     const [loadingItemId, setLoadingItemId] = useState(null);
      const [productsToShow, setProductsToShow] = useState(5);  
 
 
@@ -37,9 +37,15 @@ const ProductCard = ({ products }) => {
  
      const limitedProducts = products.slice(0, productsToShow);
 
-  const handleClick = (product) => {
-      Navigate('/details', {state: {product}})
-  }
+     const handleClick = (product) => {
+      // Set the loading item ID to show spinner for this specific item
+      setLoadingItemId(product.id);
+      
+      setTimeout(() => {
+        Navigate('/details', {state: {product}});
+        setLoadingItemId(null);
+      }, 1500);
+    }
   return (
     <div className="product-grid">
       {limitedProducts.map((product, index) => (

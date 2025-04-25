@@ -11,6 +11,7 @@ const socket = io(process.env.REACT_APP_API_URL);
 export default function ChatPage({ buyerId }) {
   const location = useLocation();
   const product = location.state?.product;
+  const sellerName = location.state?.sellerName;
   const messagesEndRef = useRef(null);
   const productId = product.id;
   const dispatch = useDispatch();
@@ -185,7 +186,7 @@ export default function ChatPage({ buyerId }) {
                 </div>
               </div>
             )}
-            <h2>Chat with {userId === sellerUserId ? 'Buyer' : 'Seller'}</h2>
+            <h2>Chat with {userId === sellerUserId ? 'Buyer' : sellerName}</h2>
           </div>
 
           <div className="chat-container">
@@ -209,7 +210,7 @@ export default function ChatPage({ buyerId }) {
               className={`message-bubble ${msg.sender_id === userId ? 'sent' : 'received'}`}
             >
               <p className="message-text">
-                <strong>{msg.message_sender}:</strong> {msg.message_text}
+                <strong>{sellerName}:</strong> {msg.message_text}
               </p>
               <p className="timestamp">{formattedTime}</p>
             </div>

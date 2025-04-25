@@ -64,5 +64,21 @@ const auth =  async (req, res) => {
     }
   }
 
-
-module.exports = { acct, auth };
+  // const getUserById = async (req, res) => {
+  //   const { id } = req.params;
+  
+  //   try {
+  //     const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+  
+  //     if (response.rows.length === 0) {
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
+  
+  //     return res.json(response.rows[0]);
+  //   } catch (error) {
+  //     console.error('Error fetching user by ID:', error);
+  //     return res.status(500).json({ message: 'Server error while fetching user' });
+  //   }
+  // };
+  
+module.exports = { acct, auth, getUserById };

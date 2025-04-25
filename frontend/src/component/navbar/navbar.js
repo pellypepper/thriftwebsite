@@ -32,11 +32,13 @@ export default function Navbar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleMenuClick = async () => {
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+
+    if (menuRef.current) {
+      menuRef.current.classList.remove("open");
+    }
+
+
   };
 
   const handleToggle = () => {
@@ -48,6 +50,10 @@ export default function Navbar({
   const handleSellClick = () => {
     if (sellRef && sellRef.current) {
       sellRef.current.classList.toggle("open");
+    }
+
+    if (menuRef.current) {
+      menuRef.current.classList.remove("open");
     }
   };
 
@@ -81,7 +87,8 @@ export default function Navbar({
     navigate("/details", { state: { product } });
   };
 
-  const handleSubMenuClick = () => {
+  const handleSubMenuClick = (e) => {
+    e.stopPropagation();
     // Toggle dropdown visibility
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -89,6 +96,13 @@ export default function Navbar({
   const handleCategoryClick = (category) => {
     console.log(category);
     navigate("/category", { state: { category: category } });
+
+    setIsDropdownOpen(false);
+    
+    // Close the main menu as well
+    if (menuRef.current) {
+      menuRef.current.classList.remove("open");
+    }
   };
 
   return (
@@ -105,7 +119,7 @@ export default function Navbar({
         </div>
 
         <nav ref={menuRef}>
-          {isLoading && <Spinner />}
+     
           <ul>
             <li>
               <Link to="/" onClick={handleMenuClick}>
@@ -174,14 +188,27 @@ export default function Navbar({
                 </SignInButton>
               </div>
             </SignedOut>
-            <SignedIn>
-              <div className="profile-btn">
-                <span>
-                  {loading ? "Loading..." : clerkUser?.username}
-                  {clerkSyncStatus === "loading" && " (Syncing...)"}
-                </span>
-              </div>
-            </SignedIn>
+         
+<SignedIn>
+  <div className="profile-btn">
+    <span>
+      {loading ? (
+        <>
+          Loading... <Spinner />
+        </>
+      ) : (
+        <>
+          {clerkUser?.username}
+          {clerkSyncStatus === "loading" && (
+            <>
+              {" (Syncing..."} <Spinner /> {")"}
+            </>
+          )}
+        </>
+      )}
+    </span>
+  </div>
+</SignedIn>
           </div>
         </nav>
 
