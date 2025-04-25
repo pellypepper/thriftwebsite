@@ -71,4 +71,71 @@ const createProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct };
+
+const updateProduct = async (req, res) => {
+  try {
+    upload(req, res, async function(err) {
+      if (err) {
+        return res.status(400).json({
+          error: 'File upload error',
+          details: err.message
+        });
+      }
+
+   
+      const { id, title, price, description } = req.body;
+  
+      
+      const result = await pool.query('SELECT * FROM items WHERE id = $1', [id]);
+      
+      if (result.rows.length === 0) {
+        return res.status(404).send('No product found');
+      }
+      
+      let imageUrl = result.rows[0].image_url;
+      
+      if (req.file) {
+        try {
+          const processedImage = await processImage(req.file.buffer);
+          const cloudinaryResponse = await uploadToCloudinary(processedImage);
+          imageUrl = cloudinaryResponse.secure_url;
+        } catch (fileError) {
+          return res.status(400).json({
+            error: 'Image processing or upload failed',
+            details: fileError.message,
+          });
+        }
+      }
+      
+      const updateQuery = `
+        UPDATE items 
+        SET title = $1, price = $2, description = $3, image_url = $4 
+        WHERE id = $5
+        RETURNING *;
+      `;
+      const updateValues = [title, price, description, imageUrl, id];
+
+      const updateResult = await pool.query(updateQuery, updateValues);
+
+      
+      if (updateResult.rowCount === 0) {
+        return res.status(400).send('Unable to update product');
+      }
+
+    
+      res.status(200).json({
+        message: 'Item updated successfully',
+        item: updateResult.rows[0], 
+      });
+    });
+    
+
+  } catch (error) {
+   
+    res.status(500).send(error.message);
+  }
+};
+
+
+module.exports = { createProduct , updateProduct};
+

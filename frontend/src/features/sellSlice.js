@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 
 // Async thunk for posting a new listing
@@ -31,6 +31,23 @@ export const fetchItems = createAsyncThunk('sell/fetchItems', async ({ category,
     return rejectWithValue(error.response.data);
   }
 });
+
+export const updateProduct = createAsyncThunk(
+  'sell/updateProduct',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const result = await axios.put(`${baseURL}/api/sell/updateForm`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return result.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 
 const sellSlice = createSlice({
   name: 'sell',

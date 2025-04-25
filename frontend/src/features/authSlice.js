@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const baseURL = process.env.REACT_APP_API_URL || 'https://thriftwebsite.fly.dev';
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 export const sendClerkDataToBackend = createAsyncThunk(
   'auth/sendClerkData',

@@ -21,7 +21,6 @@ const Sell = ({ sellRef }) => {
   const { user: clerkUser } = useUser(); 
   const dispatch = useDispatch();
   const { loading} = useSelector((state) => state.sell);
-  
   const [showNotification, setShowNotification] = useState(false); 
   const [notificationMessage, setNotificationMessage] = useState('');
   const [notificationType, setNotificationType] = useState('');
