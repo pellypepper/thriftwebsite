@@ -2,7 +2,7 @@
 
 ThriftWorld is a real-time marketplace web application designed to let users from anywhere in the world post both used and new products, connect with potential buyers, and chat directly — no middleman, no online payment. Whether you're decluttering your closet or hunting for a deal, ThriftWorld helps make the exchange smooth, social, and secure.
 
----<img width="1920" height="969" alt="screencapture-gaz-infy-uk-2025-07-10-15_14_24" src="https://github.com/user-attachments/assets/5fc728aa-b775-4fdb-ba37-435050f4be4c" />
+
 <img width="1920" height="3370" alt="screencapture-thriftwebsite-fly-dev-2025-07-10-15_16_58" src="https://github.com/user-attachments/assets/a423fdd7-52d4-48d1-9d06-7e75bf7b274b" />
 
 
