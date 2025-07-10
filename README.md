@@ -5,6 +5,7 @@ ThriftWorld is a real-time marketplace web application designed to let users fro
 
 <img width="1920" height="3370" alt="screencapture-thriftwebsite-fly-dev-2025-07-10-15_16_58" src="https://github.com/user-attachments/assets/a423fdd7-52d4-48d1-9d06-7e75bf7b274b" />
 
+<img width="1920" height="1045" alt="screencapture-thriftwebsite-fly-dev-inbox-2025-07-10-15_19_07" src="https://github.com/user-attachments/assets/efb0b02a-9c68-4d3d-9d7e-0caff0f0c742" />
 
 ## 🚀 Features
 
